@@ -5,7 +5,7 @@ export const PROJECTS = [
     name: 'Minilink',
     description: 'A URL shortener application with analytics tracking.',
     demo: 'https://minilink-demo.com',
-    code: 'https://github.com/vijenderyadav/minilink',
+    code: 'https://github.com/desmond009/minilink',
     tags: ['React', 'Node.js', 'MongoDB'],
   },
   {
@@ -13,7 +13,7 @@ export const PROJECTS = [
     name: 'SoulScript',
     description: 'A decentralized journaling platform on the blockchain.',
     demo: 'https://soulscript-demo.com',
-    code: 'https://github.com/vijenderyadav/soulscript',
+    code: 'https://github.com/desmond009/soulscript',
     tags: ['React', 'Solidity', 'Web3'],
   },
   {
@@ -21,7 +21,7 @@ export const PROJECTS = [
     name: 'Sol_Faucet',
     description: 'A Solana blockchain faucet for distributing tokens.',
     demo: 'https://solfaucet-demo.com',
-    code: 'https://github.com/vijenderyadav/sol_faucet',
+    code: 'https://github.com/desmond009/sol_faucet',
     tags: ['Solana', 'Web3', 'React'],
   },
   {
@@ -29,7 +29,7 @@ export const PROJECTS = [
     name: 'Twin-up',
     description: 'A social platform connecting digital twins.',
     demo: 'https://twinup-demo.com',
-    code: 'https://github.com/vijenderyadav/twin-up',
+    code: 'https://github.com/desmond009/twin-up',
     tags: ['React', 'Node.js', 'MongoDB'],
   },
   {
@@ -37,7 +37,7 @@ export const PROJECTS = [
     name: 'TollCrypt',
     description: 'A blockchain-based toll payment system with encryption.',
     demo: 'https://tollcrypt-demo.com',
-    code: 'https://github.com/vijenderyadav/tollcrypt',
+    code: 'https://github.com/desmond009/tollcrypt',
     tags: ['Solidity', 'Web3', 'Encryption'],
   },
   {
@@ -45,7 +45,7 @@ export const PROJECTS = [
     name: 'OrcaEarn',
     description: 'A DeFi yield farming platform built on Solana.',
     demo: 'https://orcaearn-demo.com',
-    code: 'https://github.com/vijenderyadav/orcaearn',
+    code: 'https://github.com/desmond009/orcaearn',
     tags: ['Solana', 'DeFi', 'React'],
   },
 ];
@@ -58,8 +58,8 @@ export const SKILLS = [
 ];
 
 export const SOCIAL_LINKS = [
-  { name: 'GitHub', url: 'https://github.com/vijenderyadav' },
-  { name: 'LinkedIn', url: 'https://linkedin.com/in/vijenderyadav' },
-  { name: 'Twitter', url: 'https://twitter.com/vijenderyadav' },
-  { name: 'Email', url: 'mailto:vijender@example.com' },
+  { name: 'GitHub', url: 'https://github.com/desmond009' },
+  { name: 'LinkedIn', url: 'https://linkedin.com/in/desmond009' },
+  { name: 'Twitter', url: 'https://twitter.com/desmond009' },
+  { name: 'Email', url: 'mailto:desmond@example.com' },
 ];
