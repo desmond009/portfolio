@@ -1,0 +1,23 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "A modern, full-stack developer portfolio website built with React (Vite) and Node.js (Express)",
+  "main": "backend/server.js",
+  "scripts": {
+    "setup": "bash setup.sh",
+    "start": "bash start.sh",
+    "verify": "bash verify.sh",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "echo 'Backend is already optimized'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["portfolio", "react", "vite", "express", "nodejs", "full-stack"],
+  "author": "Vijender Yadav",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
