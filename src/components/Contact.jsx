@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { FaEnvelope, FaPhone, FaGithub, FaLinkedin, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaXTwitter, FaInstagram } from 'react-icons/fa6';
+import { SiLeetcode } from 'react-icons/si';
 
 const Contact = () => {
   const ref = useRef(null);
@@ -42,6 +44,24 @@ const Contact = () => {
       name: 'LinkedIn',
       icon: <FaLinkedin className="w-6 h-6" />,
       href: 'https://linkedin.com/in/vijender-yadav-iiit',
+      color: 'hover:text-primary-cyan',
+    },
+    {
+      name: 'LeetCode',
+      icon: <SiLeetcode className="w-6 h-6" />,
+      href: 'https://leetcode.com/u/code_nova_/',
+      color: 'hover:text-primary-teal',
+    },
+    {
+      name: 'X (Twitter)',
+      icon: <FaXTwitter className="w-6 h-6" />,
+      href: 'https://x.com/Vij_yadav_viju',
+      color: 'hover:text-primary-teal',
+    },
+    {
+      name: 'Instagram',
+      icon: <FaInstagram className="w-6 h-6" />,
+      href: 'https://www.instagram.com/by_vijender.eth/',
       color: 'hover:text-primary-cyan',
     },
   ];

@@ -16,9 +16,10 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-mono mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-mono mb-2">
             <span className="text-gradient">About Me</span>
           </h2>
+          <h3 className="text-2xl sm:text-3xl font-bold text-text-light mb-4">VIJENDER YADAV</h3>
           <div className="w-24 h-1 bg-gradient-to-r from-primary-teal to-primary-cyan mx-auto"></div>
         </motion.div>
 

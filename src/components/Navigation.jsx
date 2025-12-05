@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaXTwitter, FaInstagram } from 'react-icons/fa6';
+import { SiLeetcode } from 'react-icons/si';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -110,6 +112,33 @@ const Navigation = () => {
               aria-label="LinkedIn"
             >
               <FaLinkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://leetcode.com/u/code_nova_/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-light hover:text-primary-teal transition-colors duration-300"
+              aria-label="LeetCode"
+            >
+              <SiLeetcode className="w-5 h-5" />
+            </a>
+            <a
+              href="https://x.com/Vij_yadav_viju"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-light hover:text-primary-teal transition-colors duration-300"
+              aria-label="X (Twitter)"
+            >
+              <FaXTwitter className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/by_vijender.eth/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-light hover:text-primary-teal transition-colors duration-300"
+              aria-label="Instagram"
+            >
+              <FaInstagram className="w-5 h-5" />
             </a>
           </div>
         </div>
