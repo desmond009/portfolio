@@ -48,10 +48,10 @@ const About = () => {
                 <FaGraduationCap className="text-primary-teal" />
                 <span>B.Tech CSE (2023-2027)</span>
               </div>
-              <div className="flex items-center gap-2 text-text-light/80">
+              {/* <div className="flex items-center gap-2 text-text-light/80">
                 <FaMapMarkerAlt className="text-primary-teal" />
                 <span>Joga Yellapur, KA, India</span>
-              </div>
+              </div> */}
             </div>
           </motion.div>
 

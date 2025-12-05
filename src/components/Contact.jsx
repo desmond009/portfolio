@@ -21,14 +21,14 @@ const Contact = () => {
       value: '+91-935-216-3317',
       href: 'tel:+919352163317',
       color: 'from-primary-cyan to-secondary-blue',
-    },
-    {
-      icon: <FaMapMarkerAlt className="w-6 h-6" />,
-      label: 'Location',
-      value: 'Joga Yellapur, KA, India',
-      href: null,
-      color: 'from-secondary-blue to-primary-teal',
-    },
+    }
+    // {
+    //   icon: <FaMapMarkerAlt className="w-6 h-6" />,
+    //   label: 'Location',
+    //   value: 'Joga Yellapur, KA, India',
+    //   href: null,
+    //   color: 'from-secondary-blue to-primary-teal',
+    // },
   ];
 
   const socialLinks = [
