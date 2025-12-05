@@ -2,7 +2,18 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaFire, FaCoins, FaLink, FaEthereum } from 'react-icons/fa';
-import { SiReact, SiNodedotjs, SiMongodb, SiFirebase, SiSolana, SiVite, SiEthereum } from 'react-icons/si';
+import {
+  SiReact,
+  SiNodedotjs,
+  SiMongodb,
+  SiFirebase,
+  SiSolana,
+  SiVite,
+  SiEthereum,
+  SiDocker,
+  SiSolidity,
+  SiSocketdotio,
+} from 'react-icons/si';
 
 const Projects = () => {
   const ref = useRef(null);
@@ -85,6 +96,26 @@ const Projects = () => {
       demo: null,
       color: 'from-primary-teal via-primary-cyan to-secondary-blue',
       icon: <FaEthereum className="w-6 h-6" />,
+    },
+    {
+      title: 'TollChain',
+      period: '2025',
+      subtitle: 'Automated Toll Collection | Web2/Web3 Hybrid | Privacy-First',
+      description:
+        'Production-ready toll collection system with Zero-Knowledge Proofs, smart contract factory pattern, WebRTC QR scanning, and real-time settlement via Socket.io.',
+      techStack: ['React 19', 'Node.js', 'Solidity', 'Foundry', 'MongoDB', 'Wagmi', 'Socket.io', 'Docker', 'ZKP'],
+      icons: [<SiReact key="react" />, <SiNodedotjs key="node" />, <SiDocker key="docker" />, <SiSolidity key="solidity" />],
+      features: [
+        'ZKP-based identity (Anonymous Aadhaar)',
+        'Factory pattern: TopUpWalletFactory + TollCollection',
+        'WebRTC QR scanning with 5-min encrypted codes',
+        'Socket.io real-time payment confirmation',
+        'OCR license plate validation + RBAC admin dashboard',
+      ],
+      github: 'https://github.com/desmond009/TollCrypt',
+      demo: null,
+      color: 'from-secondary-blue via-primary-cyan to-primary-teal',
+      icon: <SiSocketdotio className="w-6 h-6" />,
     },
   ];
 
