@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { FaGithub, FaExternalLinkAlt, FaFire, FaCoins, FaLink } from 'react-icons/fa';
-import { SiReact, SiNodedotjs, SiMongodb, SiFirebase, SiSolana, SiVite } from 'react-icons/si';
+import { FaGithub, FaExternalLinkAlt, FaFire, FaCoins, FaLink, FaEthereum } from 'react-icons/fa';
+import { SiReact, SiNodedotjs, SiMongodb, SiFirebase, SiSolana, SiVite, SiEthereum } from 'react-icons/si';
 
 const Projects = () => {
   const ref = useRef(null);
@@ -66,6 +66,26 @@ const Projects = () => {
       color: 'from-secondary-blue to-primary-teal',
       icon: <FaLink className="w-6 h-6" />,
     },
+    {
+      title: 'OrcaEarn',
+      period: '2025',
+      subtitle: 'Ethereum Staking Protocol | Sepolia Testnet',
+      description:
+        'Non-custodial staking dApp. Stake ETH → Earn ORCA tokens → Claim anytime. Gas-optimized smart contracts + React 19 frontend with real-time dashboards and MetaMask integration.',
+      techStack: ['Solidity', 'Foundry', 'React 19', 'Wagmi', 'TanStack Query', 'Tailwind CSS'],
+      icons: [<SiEthereum key="ethereum" />, <SiReact key="react" />, <SiVite key="vite" />],
+      features: [
+        'Stake/Unstake ETH (No lock-up)',
+        'Claim ORCA rewards in real-time',
+        'O(1) gas-optimized calculations',
+        'MetaMask wallet integration',
+        'Real-time balance tracking',
+      ],
+      github: 'https://github.com/desmond009/OrcaEarn',
+      demo: null,
+      color: 'from-primary-teal via-primary-cyan to-secondary-blue',
+      icon: <FaEthereum className="w-6 h-6" />,
+    },
   ];
 
   return (
@@ -104,6 +124,9 @@ const Projects = () => {
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-1">{project.title}</h3>
+                {project.subtitle && (
+                  <p className="text-white/90 text-xs font-medium mb-1">{project.subtitle}</p>
+                )}
                 <p className="text-white/80 text-sm">{project.period}</p>
               </div>
 
