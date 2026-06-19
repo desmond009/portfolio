@@ -36,8 +36,8 @@ export const navLinks = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
   { name: 'Experience', href: '#experience' },
+  { name: 'Projects', href: '#projects' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -65,8 +65,12 @@ export const skills = [
 export const projects = [
   {
     title: 'SoulScript',
+    eyebrow: 'Quote intelligence library',
     description:
       'A polished quote and reflection library with authentication, favorites, filtering, and live API integration.',
+    featureTitle: 'Capture inspiration, organize it, and return to it fast.',
+    features: ['Firebase auth', 'Favorites system', 'Auto-tag filtering', 'Live quote API'],
+    metrics: ['Realtime', 'Saved lists', 'Animated UI'],
     stack: ['React', 'Firebase', 'API', 'Animations'],
     github: 'https://github.com/desmond009/SoulScript',
     live: '#',
@@ -75,8 +79,12 @@ export const projects = [
   },
   {
     title: 'Minilink',
+    eyebrow: 'Link operations dashboard',
     description:
       'Full-stack URL shortener with QR tooling, analytics tracking, modern auth, and a fast dashboard experience.',
+    featureTitle: 'Short links with analytics, QR flows, and auth built in.',
+    features: ['JWT + OAuth', 'QR generator', 'Click analytics', 'MongoDB persistence'],
+    metrics: ['Full-stack', 'Analytics', 'QR tools'],
     stack: ['React', 'Node.js', 'Express', 'MongoDB'],
     github: 'https://github.com/desmond009/Minilink',
     live: '#',
@@ -85,8 +93,12 @@ export const projects = [
   },
   {
     title: 'Sol Faucet',
+    eyebrow: 'Solana devnet utility',
     description:
       'Solana Devnet faucet with Phantom wallet connection, balance updates, transfers, and transaction tracking.',
+    featureTitle: 'A clean wallet-connected flow for testing Solana transactions.',
+    features: ['Phantom wallet', 'Devnet airdrops', 'Balance sync', 'Transaction history'],
+    metrics: ['Solana', 'Wallet UX', 'Devnet'],
     stack: ['React', 'Vite', 'Solana', 'Phantom'],
     github: 'https://github.com/desmond009/Sol_Faucet',
     live: '#',
@@ -95,8 +107,12 @@ export const projects = [
   },
   {
     title: 'ORCA Staking',
+    eyebrow: 'Web3 staking protocol',
     description:
       'Web3 staking interface for earning ORCA-style rewards with wallet flows, status panels, and contract actions.',
+    featureTitle: 'Stake, monitor rewards, and claim through a focused dApp surface.',
+    features: ['Smart contracts', 'Wallet actions', 'Reward tracking', 'Status dashboard'],
+    metrics: ['Sepolia', 'Rewards', 'dApp'],
     stack: ['Solidity', 'React', 'Wagmi', 'Tailwind'],
     github: 'https://github.com/desmond009/OrcaEarn',
     live: '#',
@@ -105,8 +121,12 @@ export const projects = [
   },
   {
     title: 'Appwrite Blog',
+    eyebrow: 'Publishing platform',
     description:
       'A production-minded blog platform powered by Appwrite auth, database storage, and clean publishing flows.',
+    featureTitle: 'A modern content system with authentication and clean editorial flows.',
+    features: ['Appwrite auth', 'Post editor', 'Database storage', 'Protected routes'],
+    metrics: ['CMS', 'Auth', 'CRUD'],
     stack: ['React', 'Appwrite', 'Tailwind', 'Auth'],
     github: 'https://github.com/desmond009',
     live: '#',

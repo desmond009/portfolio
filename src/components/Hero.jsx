@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { animate, createTimeline, utils } from 'animejs';
-import { FaArrowDown, FaCode, FaPaperPlane } from 'react-icons/fa';
+import { createTimeline, utils } from 'animejs';
+import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
 import { profile } from '../data/portfolio';
 
 const { stagger } = utils;
@@ -12,56 +12,101 @@ const Hero = () => {
     const root = heroRef.current;
     if (!root) return undefined;
 
-    const headlineLetters = root.querySelectorAll('.headline-letter');
-    const heroItems = root.querySelectorAll('.hero-reveal');
-    const floaters = root.querySelectorAll('.floating-element');
-    const orbs = root.querySelectorAll('.glow-orb');
+    const titleLines = root.querySelectorAll('.editorial-title-line');
+    const revealItems = root.querySelectorAll('.hero-reveal');
+    const redPanel = root.querySelector('.editorial-red-panel');
+    const kineticLines = root.querySelectorAll('.hero-kinetic-line');
+    const tickerItems = root.querySelectorAll('.hero-ticker-item');
+    const labelDot = root.querySelector('.editorial-label span');
+    const scrollIcon = root.querySelector('.editorial-scroll svg');
 
-    // Hero entrance timeline: letters, supporting copy, and CTAs arrive in a controlled sequence.
+    const handlePointerMove = (event) => {
+      const rect = root.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width - 0.5).toFixed(3);
+      const y = ((event.clientY - rect.top) / rect.height - 0.5).toFixed(3);
+
+      root.style.setProperty('--hero-mouse-x', x);
+      root.style.setProperty('--hero-mouse-y', y);
+    };
+
+    // Editorial intro with layered idle motion so the first viewport feels alive after loading.
     const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
     timeline
-      .add(headlineLetters, {
+      .add(redPanel, {
         opacity: [0, 1],
-        translateY: [48, 0],
-        rotateX: [-70, 0],
-        duration: 950,
-        delay: stagger(24),
+        translateX: [48, 0],
+        rotate: [2, 0],
+        duration: 760,
       })
       .add(
-        heroItems,
+        titleLines,
+        {
+          opacity: [0, 1],
+          translateY: [42, 0],
+          skewX: [-5, 0],
+          duration: 760,
+          delay: stagger(80),
+        },
+        '-=520',
+      )
+      .add(
+        revealItems,
         {
           opacity: [0, 1],
           translateY: [28, 0],
-          duration: 850,
-          delay: stagger(120),
+          duration: 720,
+          delay: stagger(85),
         },
-        '-=650',
+        '-=460',
       );
 
-    // Ambient motion is intentionally slow so the premium background feels alive without distraction.
-    const floatingAnimation = animate(floaters, {
-      translateY: [0, -22, 0],
-      rotate: [-4, 5, -4],
-      duration: 5200,
-      delay: stagger(260),
-      loop: true,
-      ease: 'inOutSine',
-    });
+    const panelDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
+      .add(redPanel, {
+        translateY: [0, -18, 0],
+        rotate: [0, -1.2, 0.8, 0],
+        duration: 6200,
+      });
 
-    const orbAnimation = animate(orbs, {
-      translateX: [0, 42, -18, 0],
-      translateY: [0, -34, 24, 0],
-      scale: [1, 1.14, 0.96, 1],
-      duration: 9000,
-      delay: stagger(700),
-      loop: true,
-      ease: 'inOutSine',
-    });
+    const lineDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
+      .add(kineticLines, {
+        translateX: (_, index) => [index % 2 === 0 ? -36 : 36, index % 2 === 0 ? 42 : -42, index % 2 === 0 ? -36 : 36],
+        opacity: [0.18, 0.52, 0.18],
+        duration: (_, index) => 5600 + index * 900,
+        delay: stagger(220),
+      });
+
+    const tickerDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
+      .add(tickerItems, {
+        translateY: (_, index) => [0, index % 2 === 0 ? -8 : 8, 0],
+        opacity: [0.48, 0.95, 0.48],
+        duration: (_, index) => 3600 + index * 360,
+        delay: stagger(160),
+      });
+
+    const dotPulse = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
+      .add(labelDot, {
+        scale: [1, 1.8, 1],
+        boxShadow: ['0 0 0 rgba(255, 61, 29, 0)', '0 0 26px rgba(255, 61, 29, 0.72)', '0 0 0 rgba(255, 61, 29, 0)'],
+        duration: 1800,
+      });
+
+    const scrollSpin = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
+      .add(scrollIcon, {
+        translateY: [0, 8, 0],
+        scale: [1, 1.16, 1],
+        duration: 1700,
+      });
+
+    root.addEventListener('pointermove', handlePointerMove);
 
     return () => {
       timeline.revert();
-      floatingAnimation.revert();
-      orbAnimation.revert();
+      panelDrift.revert();
+      lineDrift.revert();
+      tickerDrift.revert();
+      dotPulse.revert();
+      scrollSpin.revert();
+      root.removeEventListener('pointermove', handlePointerMove);
     };
   }, []);
 
@@ -69,81 +114,65 @@ const Hero = () => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const name = profile.name.split('');
-
   return (
-    <section id="home" ref={heroRef} className="relative flex min-h-screen items-center overflow-hidden pt-24">
-      <div className="absolute inset-0 animated-grid opacity-70" />
-      <div className="glow-orb absolute left-[-10rem] top-28 h-80 w-80 rounded-full bg-neon/20 blur-3xl" />
-      <div className="glow-orb absolute right-[-8rem] top-20 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl" />
-      <div className="glow-orb absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-emerald-300/10 blur-3xl" />
+    <section id="home" ref={heroRef} className="editorial-hero relative min-h-screen overflow-hidden pt-24">
+      <div className="hero-kinetic-layer" aria-hidden="true">
+        <span className="hero-kinetic-line hero-kinetic-line-one" />
+        <span className="hero-kinetic-line hero-kinetic-line-two" />
+        <span className="hero-kinetic-line hero-kinetic-line-three" />
+      </div>
+      <div className="editorial-red-panel" />
 
-      <div className="floating-element pointer-events-none absolute right-[9%] top-[23%] hidden h-24 w-24 rounded-[2rem] border border-cyan-200/20 bg-white/[0.04] shadow-glass backdrop-blur-xl lg:block" />
-      <div className="floating-element pointer-events-none absolute left-[8%] top-[34%] hidden h-16 w-16 rotate-45 border border-neon/30 bg-neon/[0.06] shadow-neon lg:block" />
-      <div className="floating-element pointer-events-none absolute bottom-[18%] right-[18%] hidden h-20 w-20 rounded-full border border-white/15 bg-cyan-300/[0.05] shadow-glass lg:block" />
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pb-16 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8">
-        <div>
-          <p className="hero-reveal mb-5 inline-flex rounded-full border border-neon/25 bg-neon/[0.07] px-4 py-2 font-mono text-xs uppercase tracking-[0.28em] text-neon opacity-0">
-            Engineer Student / Web3 Builder
-          </p>
-
-          <h1 className="max-w-5xl text-balance text-5xl font-black leading-[0.95] text-white sm:text-6xl lg:text-8xl">
-            <span className="block overflow-hidden pb-2">
-              {name.map((letter, index) => (
-                <span key={`${letter}-${index}`} className="headline-letter inline-block opacity-0">
-                  {letter === ' ' ? '\u00A0' : letter}
-                </span>
-              ))}
-            </span>
-            <span className="hero-reveal mt-3 block bg-gradient-to-r from-neon via-cyan-200 to-sky-300 bg-clip-text text-3xl font-black leading-tight text-transparent opacity-0 sm:text-4xl lg:text-6xl">
-              Full-Stack Developer
-            </span>
-          </h1>
-
-          <p className="hero-reveal mt-6 max-w-2xl text-lg leading-8 text-slate-300 opacity-0 sm:text-xl">
-            {profile.role}. I design and build polished web apps, wallet-connected products, and scalable interfaces
-            that feel sharp enough for recruiters and useful enough for real users.
-          </p>
-
-          <div className="hero-reveal mt-9 flex flex-col gap-4 opacity-0 sm:flex-row">
-            <button type="button" onClick={() => scrollTo('#projects')} className="magnetic-btn primary-btn">
-              <FaCode />
-              View Projects
-            </button>
-            <button type="button" onClick={() => scrollTo('#contact')} className="magnetic-btn secondary-btn">
-              <FaPaperPlane />
-              Contact Me
-            </button>
-          </div>
+      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] max-w-7xl flex-col justify-center px-4 pb-12 sm:px-6 lg:px-8">
+        <div className="hero-reveal editorial-label opacity-0">
+          <span />
+          Portfolio - 2026
         </div>
 
-        <div className="hero-reveal relative opacity-0">
-          <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-neon/20 via-cyan-400/10 to-transparent blur-2xl" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.055] p-5 shadow-glass backdrop-blur-2xl">
-            <div className="mb-5 flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-red-400" />
-              <span className="h-3 w-3 rounded-full bg-amber-300" />
-              <span className="h-3 w-3 rounded-full bg-neon" />
-            </div>
-            <div className="rounded-3xl border border-cyan-200/10 bg-[#020609]/80 p-6 font-mono text-sm leading-7 text-slate-300">
-              <p><span className="text-cyan-300">const</span> developer = {'{'}</p>
-              <p className="pl-5">name: <span className="text-neon">'Vijender Yadav'</span>,</p>
-              <p className="pl-5">focus: <span className="text-neon">'Full-Stack + Web3'</span>,</p>
-              <p className="pl-5">stack: [<span className="text-cyan-200">'React'</span>, <span className="text-cyan-200">'Node'</span>, <span className="text-cyan-200">'Solana'</span>],</p>
-              <p className="pl-5">status: <span className="text-neon">'open to internships'</span></p>
-              <p>{'};'}</p>
-            </div>
-          </div>
+        <h1 className="editorial-title mt-8">
+          <span className="editorial-title-line block opacity-0">VIJENDER</span>
+          <span className="editorial-title-line block opacity-0">YADAV</span>
+        </h1>
+
+        <div className="hero-reveal mt-7 opacity-0">
+          <p className="editorial-role">
+            <span>&gt;</span> Full-Stack Developer
+          </p>
+          <p className="mt-5 max-w-3xl font-mono text-base leading-8 text-[#a09a8d] sm:text-lg">
+            {profile.role}. B.Tech engineering student building MERN products, Web3 interfaces, and recruiter-ready
+            applications with strong visual polish.
+          </p>
+          <p className="mt-2 font-mono text-sm uppercase tracking-[0.18em] text-[#7b7468]">
+            <span className="text-[#ff3d1d]">05+</span> projects / React / Node.js / Solana
+          </p>
+        </div>
+
+        <div className="hero-reveal hero-ticker opacity-0" aria-hidden="true">
+          <span className="hero-ticker-item">MERN</span>
+          <span className="hero-ticker-item">Web3</span>
+          <span className="hero-ticker-item">React</span>
+          <span className="hero-ticker-item">Node</span>
+        </div>
+
+        <div className="hero-reveal mt-10 flex flex-col gap-4 opacity-0 sm:flex-row">
+          <button type="button" onClick={() => scrollTo('#projects')} className="magnetic-btn editorial-btn editorial-btn-light">
+            View Work
+            <FaArrowRight />
+          </button>
+          <button type="button" onClick={() => scrollTo('#contact')} className="magnetic-btn editorial-btn editorial-btn-dark">
+            Contact
+          </button>
+        </div>
+
+        <div className="hero-reveal mt-14 hidden border-t border-[#f4ecd7]/10 pt-6 font-mono text-xs uppercase tracking-[0.32em] text-[#6d675b] opacity-0 md:flex">
+          <span>Find me:</span>
+          <a href={profile.github} target="_blank" rel="noopener noreferrer" className="ml-8 hover:text-[#f4ecd7]">GitHub</a>
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="ml-8 hover:text-[#f4ecd7]">LinkedIn</a>
+          <span className="mx-auto">Scroll</span>
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => scrollTo('#about')}
-        className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 rounded-full border border-white/10 bg-white/[0.04] p-4 text-cyan-200 backdrop-blur-lg transition hover:text-neon md:block"
-        aria-label="Scroll to about"
-      >
+      <button type="button" onClick={() => scrollTo('#about')} className="editorial-scroll" aria-label="Scroll to about">
         <FaArrowDown />
       </button>
     </section>

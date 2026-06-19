@@ -43,13 +43,15 @@ const Contact = () => {
   }, []);
 
   return (
-    <section id="contact" ref={ref} className="section-padding relative overflow-hidden">
-      <div className="section-halo right-[-10%] bottom-10 bg-neon/10" />
-      <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <section id="contact" ref={ref} className="contact-premium section-padding relative overflow-hidden">
+      <div className="contact-red-slab" aria-hidden="true" />
+      <div className="contact-paper-line" aria-hidden="true" />
+
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <p className="contact-reveal section-kicker">Contact</p>
-          <h2 className="contact-reveal section-title">Let’s build something polished, useful, and technically solid.</h2>
-          <p className="contact-reveal mt-5 leading-8 text-slate-300">
+          <p className="contact-reveal contact-kicker">Contact</p>
+          <h2 className="contact-reveal contact-title">Let’s build something polished, useful, and technically solid.</h2>
+          <p className="contact-reveal contact-copy mt-6">
             I am open to internship opportunities, collaborative projects, and full-stack/Web3 roles where clean
             execution matters.
           </p>
@@ -58,13 +60,13 @@ const Contact = () => {
             {contactLinks.map((link) => {
               const Icon = link.icon;
               return (
-                <a key={link.label} href={link.href} target={link.label === 'Email' ? undefined : '_blank'} rel="noopener noreferrer" className="contact-reveal glass-card flex items-center gap-4 p-4">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-300/10 text-cyan-200">
+                <a key={link.label} href={link.href} target={link.label === 'Email' ? undefined : '_blank'} rel="noopener noreferrer" className="contact-reveal contact-link-card">
+                  <span className="contact-link-icon">
                     <Icon />
                   </span>
                   <span>
-                    <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">{link.label}</span>
-                    <span className="text-white">{link.value}</span>
+                    <span className="contact-link-label">{link.label}</span>
+                    <span className="contact-link-value">{link.value}</span>
                   </span>
                 </a>
               );
@@ -72,26 +74,26 @@ const Contact = () => {
           </div>
         </div>
 
-        <form ref={formRef} className="contact-reveal glass-card p-5 sm:p-7" action={`mailto:${profile.email}`} method="post" encType="text/plain">
+        <form ref={formRef} className="contact-reveal contact-form-card" action={`mailto:${profile.email}`} method="post" encType="text/plain">
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="field-label">
+            <label className="contact-field-label">
               Name
-              <input name="name" className="field-input" placeholder="Your name" />
+              <input name="name" className="contact-field-input" placeholder="Your name" />
             </label>
-            <label className="field-label">
+            <label className="contact-field-label">
               Email
-              <input name="email" type="email" className="field-input" placeholder="you@example.com" />
+              <input name="email" type="email" className="contact-field-input" placeholder="you@example.com" />
             </label>
           </div>
-          <label className="field-label mt-4">
+          <label className="contact-field-label mt-4">
             Subject
-            <input name="subject" className="field-input" placeholder="Internship / project opportunity" />
+            <input name="subject" className="contact-field-input" placeholder="Internship / project opportunity" />
           </label>
-          <label className="field-label mt-4">
+          <label className="contact-field-label mt-4">
             Message
-            <textarea name="message" rows="6" className="field-input resize-none" placeholder="Tell me about the role, product, or idea." />
+            <textarea name="message" rows="6" className="contact-field-input resize-none" placeholder="Tell me about the role, product, or idea." />
           </label>
-          <button type="submit" className="magnetic-btn primary-btn mt-6 w-full justify-center">
+          <button type="submit" className="magnetic-btn contact-submit-btn">
             <FaPaperPlane />
             Send Message
           </button>
