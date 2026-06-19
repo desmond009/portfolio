@@ -12,7 +12,6 @@ export function useScrollMotion() {
       const direction = scrollY >= lastY ? 1 : -1;
 
       document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
-      document.documentElement.style.setProperty('--scroll-depth', `${Math.round(scrollY * 0.08)}px`);
       document.documentElement.style.setProperty('--scroll-direction', direction);
       lastY = scrollY;
       frame = 0;

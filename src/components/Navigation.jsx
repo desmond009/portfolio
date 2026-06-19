@@ -127,18 +127,18 @@ const Navigation = () => {
     <nav
       ref={navRef}
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'border-b border-cyan-300/10 bg-[#061014]/78 shadow-2xl shadow-cyan-950/20 backdrop-blur-2xl' : 'bg-transparent'
+        isScrolled ? 'border-b border-[#f3eee2]/10 bg-[#0b0d0f]/82 shadow-2xl shadow-black/30 backdrop-blur-2xl' : 'bg-transparent'
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <a href="#home" onClick={(e) => scrollToSection(e, '#home')} className="group flex items-center gap-3">
-            <span className="nav-logo-mark grid h-11 w-11 place-items-center rounded-2xl border border-cyan-300/25 bg-white/[0.04] font-mono text-lg font-bold text-neon opacity-0 shadow-glass transition group-hover:border-neon/70 group-hover:shadow-neon">
+            <span className="nav-logo-mark grid h-11 w-11 place-items-center rounded-2xl border border-[#c7a35c]/35 bg-white/[0.04] font-mono text-lg font-bold text-[#d9bd7a] opacity-0 shadow-glass transition group-hover:border-[#d9bd7a]/70 group-hover:shadow-neon">
               VY
             </span>
             <span className="hidden text-sm font-semibold leading-tight text-white sm:block">
               Vijender
-              <span className="block font-mono text-[11px] uppercase tracking-[0.28em] text-cyan-200/60">Portfolio</span>
+              <span className="block font-mono text-[11px] uppercase tracking-[0.28em] text-[#86a9a6]/70">Portfolio</span>
             </span>
           </a>
 
@@ -150,7 +150,7 @@ const Navigation = () => {
                 onClick={(e) => scrollToSection(e, link.href)}
                 className={`nav-link-item rounded-full px-4 py-2 text-sm font-medium opacity-0 transition ${
                   activeSection === link.href.slice(1)
-                    ? 'nav-link-active bg-[#ff3d1d]/12 text-[#ff4a2b] shadow-[inset_0_0_18px_rgba(255,61,29,0.1)]'
+                    ? 'nav-link-active bg-[#c7a35c]/12 text-[#d9bd7a] shadow-[inset_0_0_18px_rgba(199,163,92,0.1)]'
                     : 'text-[#c9c1ae] hover:text-[#f4ecd7]'
                 }`}
               >
@@ -164,7 +164,7 @@ const Navigation = () => {
               href={profile.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#ff4a2b] sm:block"
+              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#d9bd7a] sm:block"
               aria-label="GitHub"
             >
               <FaGithub className="h-5 w-5" />
@@ -173,7 +173,7 @@ const Navigation = () => {
               href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#ff4a2b] sm:block"
+              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#d9bd7a] sm:block"
               aria-label="LinkedIn"
             >
               <FaLinkedin className="h-5 w-5" />
@@ -191,13 +191,13 @@ const Navigation = () => {
       </div>
 
       {isOpen && (
-        <div className="mobile-nav-panel mx-4 mb-4 rounded-3xl border border-white/10 bg-[#071217]/95 p-3 opacity-0 shadow-2xl shadow-cyan-950/30 backdrop-blur-2xl lg:hidden">
+        <div className="mobile-nav-panel mx-4 mb-4 rounded-3xl border border-white/10 bg-[#111416]/95 p-3 opacity-0 shadow-2xl shadow-black/30 backdrop-blur-2xl lg:hidden">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
-              className="block rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 hover:bg-white/[0.06] hover:text-neon"
+              className="block rounded-2xl px-4 py-3 text-sm font-medium text-[#c9c1ae] hover:bg-white/[0.06] hover:text-[#d9bd7a]"
             >
               {link.name}
             </a>

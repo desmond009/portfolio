@@ -15,21 +15,8 @@ const Hero = () => {
     const titleLines = root.querySelectorAll('.editorial-title-line');
     const revealItems = root.querySelectorAll('.hero-reveal');
     const redPanel = root.querySelector('.editorial-red-panel');
-    const kineticLines = root.querySelectorAll('.hero-kinetic-line');
-    const tickerItems = root.querySelectorAll('.hero-ticker-item');
-    const labelDot = root.querySelector('.editorial-label span');
-    const scrollIcon = root.querySelector('.editorial-scroll svg');
 
-    const handlePointerMove = (event) => {
-      const rect = root.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width - 0.5).toFixed(3);
-      const y = ((event.clientY - rect.top) / rect.height - 0.5).toFixed(3);
-
-      root.style.setProperty('--hero-mouse-x', x);
-      root.style.setProperty('--hero-mouse-y', y);
-    };
-
-    // Editorial intro with layered idle motion so the first viewport feels alive after loading.
+    // Editorial intro keeps motion focused on first paint instead of running constant background loops.
     const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
     timeline
       .add(redPanel, {
@@ -60,53 +47,8 @@ const Hero = () => {
         '-=460',
       );
 
-    const panelDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
-      .add(redPanel, {
-        translateY: [0, -18, 0],
-        rotate: [0, -1.2, 0.8, 0],
-        duration: 6200,
-      });
-
-    const lineDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
-      .add(kineticLines, {
-        translateX: (_, index) => [index % 2 === 0 ? -36 : 36, index % 2 === 0 ? 42 : -42, index % 2 === 0 ? -36 : 36],
-        opacity: [0.18, 0.52, 0.18],
-        duration: (_, index) => 5600 + index * 900,
-        delay: stagger(220),
-      });
-
-    const tickerDrift = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
-      .add(tickerItems, {
-        translateY: (_, index) => [0, index % 2 === 0 ? -8 : 8, 0],
-        opacity: [0.48, 0.95, 0.48],
-        duration: (_, index) => 3600 + index * 360,
-        delay: stagger(160),
-      });
-
-    const dotPulse = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
-      .add(labelDot, {
-        scale: [1, 1.8, 1],
-        boxShadow: ['0 0 0 rgba(255, 61, 29, 0)', '0 0 26px rgba(255, 61, 29, 0.72)', '0 0 0 rgba(255, 61, 29, 0)'],
-        duration: 1800,
-      });
-
-    const scrollSpin = createTimeline({ loop: true, defaults: { ease: 'inOutSine' } })
-      .add(scrollIcon, {
-        translateY: [0, 8, 0],
-        scale: [1, 1.16, 1],
-        duration: 1700,
-      });
-
-    root.addEventListener('pointermove', handlePointerMove);
-
     return () => {
       timeline.revert();
-      panelDrift.revert();
-      lineDrift.revert();
-      tickerDrift.revert();
-      dotPulse.revert();
-      scrollSpin.revert();
-      root.removeEventListener('pointermove', handlePointerMove);
     };
   }, []);
 
@@ -143,7 +85,7 @@ const Hero = () => {
             applications with strong visual polish.
           </p>
           <p className="mt-2 font-mono text-sm uppercase tracking-[0.18em] text-[#7b7468]">
-            <span className="text-[#ff3d1d]">05+</span> projects / React / Node.js / Solana
+            <span className="text-[#c7a35c]">05+</span> projects / React / Node.js / Solana
           </p>
         </div>
 

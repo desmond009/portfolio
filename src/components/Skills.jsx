@@ -7,39 +7,39 @@ const { stagger } = utils;
 
 const accentStyles = {
   cyan: {
-    icon: 'text-cyan-200 bg-cyan-300/12 border-cyan-200/25',
-    glow: 'rgba(103, 232, 249, 0.34)',
-    gradient: 'from-cyan-300 via-sky-400 to-blue-500',
+    icon: 'text-[#b9d2cf] bg-[#86a9a6]/12 border-[#86a9a6]/25',
+    glow: 'rgba(134, 169, 166, 0.26)',
+    gradient: 'from-[#b9d2cf] via-[#86a9a6] to-[#405d5c]',
   },
   green: {
-    icon: 'text-neon bg-neon/12 border-neon/25',
-    glow: 'rgba(57, 255, 136, 0.34)',
-    gradient: 'from-neon via-emerald-300 to-cyan-300',
+    icon: 'text-[#d9bd7a] bg-[#c7a35c]/12 border-[#c7a35c]/25',
+    glow: 'rgba(199, 163, 92, 0.28)',
+    gradient: 'from-[#d9bd7a] via-[#c7a35c] to-[#8f6f3c]',
   },
   white: {
-    icon: 'text-white bg-white/12 border-white/20',
-    glow: 'rgba(255, 255, 255, 0.25)',
-    gradient: 'from-white via-slate-300 to-cyan-200',
+    icon: 'text-[#f3eee2] bg-white/10 border-white/18',
+    glow: 'rgba(243, 238, 226, 0.18)',
+    gradient: 'from-[#f3eee2] via-[#c9c1ae] to-[#86a9a6]',
   },
   amber: {
-    icon: 'text-amber-200 bg-amber-300/12 border-amber-200/25',
-    glow: 'rgba(252, 211, 77, 0.3)',
-    gradient: 'from-amber-300 via-yellow-300 to-orange-400',
+    icon: 'text-[#d9bd7a] bg-[#c7a35c]/12 border-[#c7a35c]/25',
+    glow: 'rgba(199, 163, 92, 0.24)',
+    gradient: 'from-[#d9bd7a] via-[#c7a35c] to-[#9a7a45]',
   },
   pink: {
-    icon: 'text-pink-200 bg-pink-300/12 border-pink-200/25',
-    glow: 'rgba(249, 168, 212, 0.3)',
-    gradient: 'from-pink-300 via-fuchsia-300 to-cyan-300',
+    icon: 'text-[#c9a7a2] bg-[#c9a7a2]/12 border-[#c9a7a2]/25',
+    glow: 'rgba(201, 167, 162, 0.22)',
+    gradient: 'from-[#c9a7a2] via-[#b68d86] to-[#86a9a6]',
   },
   violet: {
-    icon: 'text-violet-200 bg-violet-300/12 border-violet-200/25',
-    glow: 'rgba(196, 181, 253, 0.3)',
-    gradient: 'from-violet-300 via-fuchsia-300 to-cyan-300',
+    icon: 'text-[#b8b2c8] bg-[#b8b2c8]/12 border-[#b8b2c8]/25',
+    glow: 'rgba(184, 178, 200, 0.22)',
+    gradient: 'from-[#b8b2c8] via-[#9b93ad] to-[#86a9a6]',
   },
   orange: {
-    icon: 'text-orange-200 bg-orange-300/12 border-orange-200/25',
-    glow: 'rgba(253, 186, 116, 0.3)',
-    gradient: 'from-orange-300 via-amber-300 to-neon',
+    icon: 'text-[#d4b26f] bg-[#d4b26f]/12 border-[#d4b26f]/25',
+    glow: 'rgba(212, 178, 111, 0.24)',
+    gradient: 'from-[#d4b26f] via-[#c7a35c] to-[#86a9a6]',
   },
 };
 
@@ -53,7 +53,6 @@ const Skills = () => {
 
     const cards = board.querySelectorAll('.skill-card');
     const bars = board.querySelectorAll('.skill-progress-fill');
-    const floaters = board.querySelectorAll('.skill-floater');
 
     // Skill bars and floating accents animate once the board mounts for a polished dashboard feel.
     const barAnimation = animate(bars, {
@@ -63,56 +62,35 @@ const Skills = () => {
       ease: 'outExpo',
     });
 
-    const floaterAnimation = animate(floaters, {
-      translateY: (_, index) => [0, index % 2 === 0 ? -16 : 13, 0],
-      translateX: (_, index) => [0, index % 2 === 0 ? 10 : -10, 0],
-      rotate: (_, index) => [0, index % 2 === 0 ? 5 : -5, 0],
-      duration: (_, index) => 4300 + index * 420,
-      delay: stagger(180),
-      loop: true,
-      ease: 'inOutSine',
-    });
-
     const cleanups = Array.from(cards).map((card) => {
-      const handleMove = (event) => {
-        const rect = card.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        const rotateY = ((x / rect.width) - 0.5) * 8;
-        const rotateX = (0.5 - y / rect.height) * 8;
-
+      const handleEnter = () => {
         animate(card, {
-          rotateX,
-          rotateY,
-          translateY: -8,
-          duration: 240,
+          translateY: -6,
+          scale: 1.015,
+          duration: 220,
           ease: 'outQuad',
         });
-        card.style.setProperty('--skill-x', `${x}px`);
-        card.style.setProperty('--skill-y', `${y}px`);
       };
 
       const handleLeave = () => {
         animate(card, {
-          rotateX: 0,
-          rotateY: 0,
           translateY: 0,
-          duration: 540,
+          scale: 1,
+          duration: 360,
           ease: 'outExpo',
         });
       };
 
-      card.addEventListener('pointermove', handleMove);
+      card.addEventListener('pointerenter', handleEnter);
       card.addEventListener('pointerleave', handleLeave);
       return () => {
-        card.removeEventListener('pointermove', handleMove);
+        card.removeEventListener('pointerenter', handleEnter);
         card.removeEventListener('pointerleave', handleLeave);
       };
     });
 
     return () => {
       barAnimation.revert();
-      floaterAnimation.revert();
       cleanups.forEach((cleanup) => cleanup());
     };
   }, []);

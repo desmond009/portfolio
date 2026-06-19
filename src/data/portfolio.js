@@ -75,7 +75,7 @@ export const projects = [
     github: 'https://github.com/desmond009/SoulScript',
     live: '#',
     icon: FaRocket,
-    gradient: 'from-emerald-400 via-cyan-300 to-blue-500',
+    gradient: 'from-[#d9bd7a] via-[#86a9a6] to-[#405d5c]',
   },
   {
     title: 'Minilink',
@@ -89,7 +89,7 @@ export const projects = [
     github: 'https://github.com/desmond009/Minilink',
     live: '#',
     icon: FaExternalLinkAlt,
-    gradient: 'from-cyan-300 via-sky-400 to-emerald-300',
+    gradient: 'from-[#b9d2cf] via-[#86a9a6] to-[#c7a35c]',
   },
   {
     title: 'Sol Faucet',
@@ -103,7 +103,7 @@ export const projects = [
     github: 'https://github.com/desmond009/Sol_Faucet',
     live: '#',
     icon: SiSolana,
-    gradient: 'from-lime-300 via-emerald-400 to-cyan-400',
+    gradient: 'from-[#c7a35c] via-[#9f8f66] to-[#86a9a6]',
   },
   {
     title: 'ORCA Staking',
@@ -117,7 +117,7 @@ export const projects = [
     github: 'https://github.com/desmond009/OrcaEarn',
     live: '#',
     icon: SiSolidity,
-    gradient: 'from-teal-300 via-cyan-400 to-indigo-500',
+    gradient: 'from-[#86a9a6] via-[#6f8f8d] to-[#3f474f]',
   },
   {
     title: 'Appwrite Blog',
@@ -131,7 +131,7 @@ export const projects = [
     github: 'https://github.com/desmond009',
     live: '#',
     icon: SiAppwrite,
-    gradient: 'from-fuchsia-400 via-cyan-300 to-emerald-300',
+    gradient: 'from-[#c9a7a2] via-[#d9bd7a] to-[#86a9a6]',
   },
 ];
 

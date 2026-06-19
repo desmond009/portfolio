@@ -14,30 +14,12 @@ const ProjectZineCard = ({ project, index, isActive, onActivate }) => {
     const card = cardRef.current;
     if (!card) return undefined;
 
-    const layers = card.querySelectorAll('.zine-layer');
     const scan = card.querySelector('.zine-card-scan');
 
-    // Designer-style project card motion: layered parallax plus a quick editorial "snap" on hover.
-    const idleAnimation = animate(layers, {
-      translateY: (_, layerIndex) => [0, layerIndex % 2 === 0 ? -8 : 8, 0],
-      rotate: (_, layerIndex) => [0, layerIndex % 2 === 0 ? 1.8 : -1.8, 0],
-      duration: (_, layerIndex) => 3600 + layerIndex * 420,
-      delay: stagger(150),
-      loop: true,
-      ease: 'inOutSine',
-    });
-
-    const handleMove = (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const rotateY = ((x / rect.width) - 0.5) * 7;
-      const rotateX = (0.5 - y / rect.height) * 7;
-
+    const handleEnter = () => {
       animate(card, {
-        rotateX,
-        rotateY,
-        translateY: -10,
+        translateY: -8,
+        scale: 1.012,
         duration: 240,
         ease: 'outQuad',
       });
@@ -51,19 +33,17 @@ const ProjectZineCard = ({ project, index, isActive, onActivate }) => {
 
     const handleLeave = () => {
       animate(card, {
-        rotateX: 0,
-        rotateY: 0,
         translateY: 0,
+        scale: 1,
         duration: 560,
         ease: 'outExpo',
       });
     };
 
-    card.addEventListener('pointermove', handleMove);
+    card.addEventListener('pointerenter', handleEnter);
     card.addEventListener('pointerleave', handleLeave);
     return () => {
-      idleAnimation.revert();
-      card.removeEventListener('pointermove', handleMove);
+      card.removeEventListener('pointerenter', handleEnter);
       card.removeEventListener('pointerleave', handleLeave);
     };
   }, []);
@@ -93,7 +73,7 @@ const ProjectZineCard = ({ project, index, isActive, onActivate }) => {
         <div className="flex flex-1 flex-col border-t border-black/80 bg-[#f2ecd8] p-5 text-[#10100d]">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div>
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.28em] text-[#ef3d18]">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.28em] text-[#c7a35c]">
                 {project.eyebrow}
               </p>
               <h3 className="mt-2 text-3xl font-black leading-none tracking-tight">{project.title}</h3>
@@ -162,21 +142,6 @@ const Projects = () => {
     return () => timeline.revert();
   }, []);
 
-  useEffect(() => {
-    const cards = railRef.current?.querySelectorAll('.zine-project-card');
-    if (!cards?.length) return undefined;
-
-    const animation = animate(cards, {
-      opacity: (_, index) => (index === activeProject ? 1 : 0.68),
-      scale: (_, index) => (index === activeProject ? 1 : 0.94),
-      duration: 520,
-      delay: stagger(28),
-      ease: 'outExpo',
-    });
-
-    return () => animation.revert();
-  }, [activeProject]);
-
   const scrollToProject = (index) => {
     const rail = railRef.current;
     const card = rail?.querySelectorAll('.zine-project-card')[index];
@@ -226,8 +191,8 @@ const Projects = () => {
 
   return (
     <section id="projects" ref={sectionRef} className="zine-projects-section section-padding relative overflow-hidden">
-      <div className="zine-paper-glow left-[-12rem] top-10 bg-[#ef3d18]/16" />
-      <div className="zine-paper-glow right-[-12rem] bottom-0 bg-neon/10" />
+      <div className="zine-paper-glow left-[-12rem] top-10 bg-[#c7a35c]/14" />
+      <div className="zine-paper-glow right-[-12rem] bottom-0 bg-[#86a9a6]/10" />
 
       <div className="mx-auto max-w-7xl">
         <div ref={headingRef} className="reveal-project">
@@ -236,7 +201,7 @@ const Projects = () => {
               <div className="zine-label">The Zine</div>
               <h2 className="mt-5 overflow-hidden text-[4.4rem] font-black leading-[0.82] tracking-tight text-[#f2ecd8] sm:text-[7rem] lg:text-[9rem]">
                 <span className="zine-heading-word block opacity-0">FEATURED</span>
-                <span className="zine-heading-word block text-[#ef3d18] opacity-0">PROJECTS</span>
+                <span className="zine-heading-word block text-[#c7a35c] opacity-0">PROJECTS</span>
               </h2>
             </div>
             <div className="max-w-md">
@@ -270,7 +235,7 @@ const Projects = () => {
               project={project}
               index={index}
               isActive={activeProject === index}
-              onActivate={() => setActiveProject(index)}
+              onActivate={() => {}}
             />
           ))}
         </div>
