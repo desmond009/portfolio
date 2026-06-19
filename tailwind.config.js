@@ -7,19 +7,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        void: '#020608',
+        neon: '#39ff88',
         dark: {
-          base: '#0f172a',
-          secondary: '#1e293b',
+          base: '#020608',
+          secondary: '#071217',
         },
         primary: {
-          teal: '#06b6d4',
-          cyan: '#14b8a6',
+          teal: '#39ff88',
+          cyan: '#67e8f9',
         },
         secondary: {
-          blue: '#3b82f6',
+          blue: '#38bdf8',
         },
         text: {
-          light: '#e2e8f0',
+          light: '#f8fafc',
         },
       },
       fontFamily: {
@@ -28,11 +30,12 @@ export default {
         code: ['Fira Code', 'monospace'],
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(6, 182, 212, 0.3)',
-        'glow-lg': '0 0 30px rgba(6, 182, 212, 0.5)',
+        glow: '0 0 24px rgba(57, 255, 136, 0.28)',
+        'glow-lg': '0 0 44px rgba(103, 232, 249, 0.34)',
+        neon: '0 0 26px rgba(57, 255, 136, 0.22)',
+        glass: '0 24px 90px rgba(0, 0, 0, 0.38)',
       },
     },
   },
   plugins: [],
 }
-

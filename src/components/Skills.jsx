@@ -1,136 +1,48 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import {
-  FaReact,
-  FaNode,
-  FaDatabase,
-  FaCode,
-  FaEthereum,
-  FaGitAlt,
-  FaHtml5,
-  FaCss3Alt,
-  FaJs,
-  FaJava,
-} from 'react-icons/fa';
-import { SiNextdotjs, SiVite, SiTailwindcss, SiMongodb, SiMysql, SiFirebase, SiSolana } from 'react-icons/si';
-import { TbBrandJavascript } from 'react-icons/tb';
+import { skills } from '../data/portfolio';
+import { useAnimeScrollReveal } from '../hooks/useAnimeScrollReveal';
+
+const accentClasses = {
+  cyan: 'text-cyan-300 bg-cyan-300/10 border-cyan-300/20',
+  green: 'text-neon bg-neon/10 border-neon/20',
+  white: 'text-white bg-white/10 border-white/15',
+  amber: 'text-amber-300 bg-amber-300/10 border-amber-300/20',
+  pink: 'text-pink-300 bg-pink-300/10 border-pink-300/20',
+  violet: 'text-violet-300 bg-violet-300/10 border-violet-300/20',
+  orange: 'text-orange-300 bg-orange-300/10 border-orange-300/20',
+};
 
 const Skills = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const skillCategories = [
-    {
-      category: 'Languages',
-      icon: <FaCode className="w-6 h-6" />,
-      skills: [
-        { name: 'C++', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'C', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'Java', icon: <FaJava className="w-5 h-5" /> },
-        { name: 'JavaScript', icon: <FaJs className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Frontend',
-      icon: <FaReact className="w-6 h-6" />,
-      skills: [
-        { name: 'React.js', icon: <FaReact className="w-5 h-5" /> },
-        { name: 'Next.js', icon: <SiNextdotjs className="w-5 h-5" /> },
-        { name: 'Vite', icon: <SiVite className="w-5 h-5" /> },
-        { name: 'Tailwind CSS', icon: <SiTailwindcss className="w-5 h-5" /> },
-        { name: 'HTML/CSS', icon: <div className="flex gap-1"><FaHtml5 className="w-5 h-5" /><FaCss3Alt className="w-5 h-5" /></div> },
-      ],
-    },
-    {
-      category: 'Backend',
-      icon: <FaNode className="w-6 h-6" />,
-      skills: [
-        { name: 'Node.js', icon: <FaNode className="w-5 h-5" /> },
-        { name: 'Express.js', icon: <FaNode className="w-5 h-5" /> },
-        { name: 'JWT', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'OAuth', icon: <FaCode className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Databases',
-      icon: <FaDatabase className="w-6 h-6" />,
-      skills: [
-        { name: 'MongoDB', icon: <SiMongodb className="w-5 h-5" /> },
-        { name: 'MySQL', icon: <SiMysql className="w-5 h-5" /> },
-        { name: 'Firebase', icon: <SiFirebase className="w-5 h-5" /> },
-        { name: 'Appwrite', icon: <FaDatabase className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Blockchain/Web3',
-      icon: <FaEthereum className="w-6 h-6" />,
-      skills: [
-        { name: 'Solana', icon: <SiSolana className="w-5 h-5" /> },
-        { name: 'Phantom Wallet', icon: <FaEthereum className="w-5 h-5" /> },
-        { name: 'Devnet Integration', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'Solidity', icon: <FaEthereum className="w-5 h-5" /> },
-    ],
-    },
-    {
-      category: 'Tools & Platforms',
-      icon: <FaGitAlt className="w-6 h-6" />,
-      skills: [
-        { name: 'Git', icon: <FaGitAlt className="w-5 h-5" /> },
-        { name: 'GitHub', icon: <FaGitAlt className="w-5 h-5" /> },
-        { name: 'Linux', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'REST APIs', icon: <FaCode className="w-5 h-5" /> },
-      ],
-    },
-  ];
+  const ref = useAnimeScrollReveal('.skill-card', { stagger: 60 });
 
   return (
-    <section id="skills" ref={ref} className="section-padding bg-dark-base">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-mono mb-4">
-            <span className="text-gradient">Skills & Expertise</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-teal to-primary-cyan mx-auto"></div>
-        </motion.div>
+    <section id="skills" ref={ref} className="section-padding relative overflow-hidden bg-[#050b0e]">
+      <div className="section-halo right-[-12%] top-24 bg-neon/10" />
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+          <div className="max-w-3xl">
+            <p className="section-kicker">Skills</p>
+            <h2 className="section-title">A compact stack for shipping full-stack and Web3 products.</h2>
+          </div>
+          <p className="max-w-md leading-7 text-slate-400">
+            Frontend polish, backend structure, database design, cloud services, and wallet-connected blockchain flows.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.category}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: categoryIndex * 0.1 }}
-              whileHover={{ y: -5, boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)' }}
-              className="bg-dark-secondary/50 p-6 rounded-lg border border-primary-teal/20 glow-effect"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="text-primary-teal">{category.icon}</div>
-                <h3 className="text-xl font-semibold text-text-light">{category.category}</h3>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          {skills.map((skill) => {
+            const Icon = skill.icon;
+            return (
+              <div key={skill.name} className="skill-card group glass-card min-h-36 p-5">
+                <div className={`mb-5 grid h-12 w-12 place-items-center rounded-2xl border ${accentClasses[skill.accent]}`}>
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-semibold text-white">{skill.name}</h3>
+                <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full w-4/5 rounded-full bg-gradient-to-r from-neon to-cyan-300 transition-all duration-500 group-hover:w-full" />
+                </div>
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.5, delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="flex items-center gap-2 px-3 py-2 bg-dark-base/50 rounded-md border border-primary-cyan/20 text-sm text-text-light/90 hover:border-primary-teal transition-colors"
-                  >
-                    <span className="text-primary-teal">{skill.icon}</span>
-                    <span>{skill.name}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -138,4 +50,3 @@ const Skills = () => {
 };
 
 export default Skills;
-
