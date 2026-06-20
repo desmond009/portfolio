@@ -64,20 +64,6 @@ export const skills = [
 
 export const projects = [
   {
-    title: 'SoulScript',
-    eyebrow: 'Quote intelligence library',
-    description:
-      'A polished quote and reflection library with authentication, favorites, filtering, and live API integration.',
-    featureTitle: 'Capture inspiration, organize it, and return to it fast.',
-    features: ['Firebase auth', 'Favorites system', 'Auto-tag filtering', 'Live quote API'],
-    metrics: ['Realtime', 'Saved lists', 'Animated UI'],
-    stack: ['React', 'Firebase', 'API', 'Animations'],
-    github: 'https://github.com/desmond009/SoulScript',
-    live: '#',
-    icon: FaRocket,
-    gradient: 'from-[#d9bd7a] via-[#86a9a6] to-[#405d5c]',
-  },
-  {
     title: 'Minilink',
     eyebrow: 'Link operations dashboard',
     description:
@@ -120,18 +106,18 @@ export const projects = [
     gradient: 'from-[#86a9a6] via-[#6f8f8d] to-[#3f474f]',
   },
   {
-    title: 'Appwrite Blog',
-    eyebrow: 'Publishing platform',
+    title: 'SoulScript',
+    eyebrow: 'Quote intelligence library',
     description:
-      'A production-minded blog platform powered by Appwrite auth, database storage, and clean publishing flows.',
-    featureTitle: 'A modern content system with authentication and clean editorial flows.',
-    features: ['Appwrite auth', 'Post editor', 'Database storage', 'Protected routes'],
-    metrics: ['CMS', 'Auth', 'CRUD'],
-    stack: ['React', 'Appwrite', 'Tailwind', 'Auth'],
-    github: 'https://github.com/desmond009',
+      'A polished quote and reflection library with authentication, favorites, filtering, and live API integration.',
+    featureTitle: 'Capture inspiration, organize it, and return to it fast.',
+    features: ['Firebase auth', 'Favorites system', 'Auto-tag filtering', 'Live quote API'],
+    metrics: ['Realtime', 'Saved lists', 'Animated UI'],
+    stack: ['React', 'Firebase', 'API', 'Animations'],
+    github: 'https://github.com/desmond009/SoulScript',
     live: '#',
-    icon: SiAppwrite,
-    gradient: 'from-[#c9a7a2] via-[#d9bd7a] to-[#86a9a6]',
+    icon: FaRocket,
+    gradient: 'from-[#d9bd7a] via-[#86a9a6] to-[#405d5c]',
   },
 ];
 
