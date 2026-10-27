@@ -1,22 +1,57 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { FaXTwitter, FaInstagram } from 'react-icons/fa6';
-import { SiLeetcode } from 'react-icons/si';
+import { useEffect, useRef, useState } from 'react';
+import { createTimeline, utils } from 'animejs';
+import { FaBars, FaGithub, FaTimes } from 'react-icons/fa';
+import { navLinks, profile } from '../data/portfolio';
+
+const { stagger } = utils;
 
 const Navigation = () => {
+  const navRef = useRef(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    // Items drop in like stamped labels, one after another.
+    const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
+    timeline
+      .add(nav.querySelector('.nav-logo'), {
+        opacity: [0, 1],
+        translateY: [-14, 0],
+        duration: 600,
+      })
+      .add(
+        nav.querySelectorAll('.nav-link-item'),
+        {
+          opacity: [0, 1],
+          translateY: [-10, 0],
+          duration: 480,
+          delay: stagger(50),
+        },
+        '-=420',
+      )
+      .add(
+        nav.querySelector('.nav-end'),
+        {
+          opacity: [0, 1],
+          scale: [0.8, 1],
+          duration: 420,
+        },
+        '-=360',
+      );
+
+    return () => timeline.revert();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      // Update active section based on scroll position
-      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'contact'];
-      const scrollPosition = window.scrollY + 100;
-      
-      for (const section of sections) {
+      setIsScrolled(window.scrollY > 10);
+      const scrollPosition = window.scrollY + 120;
+
+      for (const section of navLinks.map((link) => link.href.slice(1))) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
@@ -28,124 +63,98 @@ const Navigation = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const menu = navRef.current?.querySelector('.mobile-nav-panel');
+    if (!menu || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
+    timeline
+      .add(menu, {
+        opacity: [0, 1],
+        translateY: [-10, 0],
+        duration: 280,
+      })
+      .add(
+        menu.querySelectorAll('a'),
+        {
+          opacity: [0, 1],
+          translateX: [-12, 0],
+          duration: 320,
+          delay: stagger(40),
+        },
+        '-=160',
+      );
+
+    return () => timeline.revert();
+  }, [isOpen]);
 
   const scrollToSection = (e, href) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    setIsOpen(false);
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-dark-base/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
-          >
-            <span className="text-2xl font-mono font-bold text-gradient">VY</span>
-          </motion.div>
+    <nav ref={navRef} className={`site-nav fixed left-0 right-0 top-0 z-50 ${isScrolled ? 'site-nav-scrolled' : ''}`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between gap-4">
+          <a href="#home" onClick={(e) => scrollToSection(e, '#home')} className="nav-logo" aria-label="Vijender Yadav, home">
+            VY
+          </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="ml-auto hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className={`relative text-sm font-medium transition-colors duration-300 ${
-                  activeSection === link.href.slice(1)
-                    ? 'text-primary-teal'
-                    : 'text-text-light hover:text-primary-cyan'
-                }`}
+                className={`nav-link nav-link-item ${activeSection === link.href.slice(1) ? 'nav-link-active' : ''}`}
               >
                 {link.name}
-                {activeSection === link.href.slice(1) && (
-                  <motion.div
-                    layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary-teal"
-                    initial={false}
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
               </a>
             ))}
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center space-x-4">
-            <a
-              href="https://github.com/desmond009"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-light hover:text-primary-teal transition-colors duration-300"
-              aria-label="GitHub"
-            >
-              <FaGithub className="w-5 h-5" />
+          <div className="nav-end flex items-center gap-3 lg:ml-6">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="icon-sq h-11 w-11" aria-label="GitHub">
+              <FaGithub />
             </a>
-            <a
-              href="https://linkedin.com/in/vijender-yadav-iiit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-light hover:text-primary-teal transition-colors duration-300"
-              aria-label="LinkedIn"
+            <button
+              type="button"
+              onClick={() => setIsOpen((value) => !value)}
+              className="icon-sq h-11 w-11 lg:hidden"
+              aria-label="Toggle navigation"
+              aria-expanded={isOpen}
             >
-              <FaLinkedin className="w-5 h-5" />
-            </a>
-            <a
-              href="https://leetcode.com/u/code_nova_/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-light hover:text-primary-teal transition-colors duration-300"
-              aria-label="LeetCode"
-            >
-              <SiLeetcode className="w-5 h-5" />
-            </a>
-            <a
-              href="https://x.com/Vij_yadav_viju"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-light hover:text-primary-teal transition-colors duration-300"
-              aria-label="X (Twitter)"
-            >
-              <FaXTwitter className="w-5 h-5" />
-            </a>
-            <a
-              href="https://www.instagram.com/by_vijender.eth/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-light hover:text-primary-teal transition-colors duration-300"
-              aria-label="Instagram"
-            >
-              <FaInstagram className="w-5 h-5" />
-            </a>
+              {isOpen ? <FaTimes /> : <FaBars />}
+            </button>
           </div>
         </div>
       </div>
-    </motion.nav>
+
+      {isOpen && (
+        <div className="mobile-nav-panel mx-4 mb-4 lg:hidden">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={(e) => scrollToSection(e, link.href)}
+              className={activeSection === link.href.slice(1) ? 'nav-link-active' : ''}
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+      )}
+    </nav>
   );
 };
 
 export default Navigation;
-

@@ -7,32 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        dark: {
-          base: '#0f172a',
-          secondary: '#1e293b',
+        paper: '#f5f2ec',
+        card: '#fbf9f5',
+        ink: {
+          DEFAULT: '#2a1f1a',
+          soft: '#4a3f38',
         },
-        primary: {
-          teal: '#06b6d4',
-          cyan: '#14b8a6',
-        },
-        secondary: {
-          blue: '#3b82f6',
-        },
-        text: {
-          light: '#e2e8f0',
-        },
+        muted: '#6b625a',
+        chip: '#b8afa6',
       },
       fontFamily: {
-        mono: ['Space Mono', 'JetBrains Mono', 'monospace'],
-        sans: ['Inter', 'Poppins', 'sans-serif'],
-        code: ['Fira Code', 'monospace'],
-      },
-      boxShadow: {
-        'glow': '0 0 20px rgba(6, 182, 212, 0.3)',
-        'glow-lg': '0 0 30px rgba(6, 182, 212, 0.5)',
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
   plugins: [],
 }
-

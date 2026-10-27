@@ -1,136 +1,81 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import {
-  FaReact,
-  FaNode,
-  FaDatabase,
-  FaCode,
-  FaEthereum,
-  FaGitAlt,
-  FaHtml5,
-  FaCss3Alt,
-  FaJs,
-  FaJava,
-} from 'react-icons/fa';
-import { SiNextdotjs, SiVite, SiTailwindcss, SiMongodb, SiMysql, SiFirebase, SiSolana } from 'react-icons/si';
-import { TbBrandJavascript } from 'react-icons/tb';
+import { useEffect, useRef } from 'react';
+import { animate, utils } from 'animejs';
+import { skills } from '../data/portfolio';
+import { useAnimeScrollReveal } from '../hooks/useAnimeScrollReveal';
+import SectionHeading from './SectionHeading';
+
+const { stagger } = utils;
+
+const blurbs = [
+  'Interface systems and product-grade implementation.',
+  'Backend logic, data flows, and integration work.',
+  'Web3, tooling, and deployment-ready workflows.',
+];
 
 const Skills = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const ref = useAnimeScrollReveal('.skill-reveal', { stagger: 60, distance: 30 });
+  const gridRef = useRef(null);
 
-  const skillCategories = [
-    {
-      category: 'Languages',
-      icon: <FaCode className="w-6 h-6" />,
-      skills: [
-        { name: 'C++', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'C', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'Java', icon: <FaJava className="w-5 h-5" /> },
-        { name: 'JavaScript', icon: <FaJs className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Frontend',
-      icon: <FaReact className="w-6 h-6" />,
-      skills: [
-        { name: 'React.js', icon: <FaReact className="w-5 h-5" /> },
-        { name: 'Next.js', icon: <SiNextdotjs className="w-5 h-5" /> },
-        { name: 'Vite', icon: <SiVite className="w-5 h-5" /> },
-        { name: 'Tailwind CSS', icon: <SiTailwindcss className="w-5 h-5" /> },
-        { name: 'HTML/CSS', icon: <div className="flex gap-1"><FaHtml5 className="w-5 h-5" /><FaCss3Alt className="w-5 h-5" /></div> },
-      ],
-    },
-    {
-      category: 'Backend',
-      icon: <FaNode className="w-6 h-6" />,
-      skills: [
-        { name: 'Node.js', icon: <FaNode className="w-5 h-5" /> },
-        { name: 'Express.js', icon: <FaNode className="w-5 h-5" /> },
-        { name: 'JWT', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'OAuth', icon: <FaCode className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Databases',
-      icon: <FaDatabase className="w-6 h-6" />,
-      skills: [
-        { name: 'MongoDB', icon: <SiMongodb className="w-5 h-5" /> },
-        { name: 'MySQL', icon: <SiMysql className="w-5 h-5" /> },
-        { name: 'Firebase', icon: <SiFirebase className="w-5 h-5" /> },
-        { name: 'Appwrite', icon: <FaDatabase className="w-5 h-5" /> },
-      ],
-    },
-    {
-      category: 'Blockchain/Web3',
-      icon: <FaEthereum className="w-6 h-6" />,
-      skills: [
-        { name: 'Solana', icon: <SiSolana className="w-5 h-5" /> },
-        { name: 'Phantom Wallet', icon: <FaEthereum className="w-5 h-5" /> },
-        { name: 'Devnet Integration', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'Solidity', icon: <FaEthereum className="w-5 h-5" /> },
-    ],
-    },
-    {
-      category: 'Tools & Platforms',
-      icon: <FaGitAlt className="w-6 h-6" />,
-      skills: [
-        { name: 'Git', icon: <FaGitAlt className="w-5 h-5" /> },
-        { name: 'GitHub', icon: <FaGitAlt className="w-5 h-5" /> },
-        { name: 'Linux', icon: <FaCode className="w-5 h-5" /> },
-        { name: 'REST APIs', icon: <FaCode className="w-5 h-5" /> },
-      ],
-    },
-  ];
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return undefined;
+
+    const bars = grid.querySelectorAll('.skill-meter-fill');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    bars.forEach((bar) => {
+      bar.style.transform = 'scaleX(0)';
+    });
+
+    // Meters fill in sequence once the grid scrolls into view.
+    let animation;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        animation = animate(bars, {
+          scaleX: [0, 1],
+          duration: 900,
+          delay: stagger(70, { start: 300 }),
+          ease: 'outExpo',
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(grid);
+    return () => {
+      observer.disconnect();
+      animation?.revert();
+    };
+  }, []);
 
   return (
-    <section id="skills" ref={ref} className="section-padding bg-dark-base">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-mono mb-4">
-            <span className="text-gradient">Skills & Expertise</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-teal to-primary-cyan mx-auto"></div>
-        </motion.div>
+    <section id="skills" ref={ref} className="section-padding">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeading title="What's in my toolkit" className="skill-reveal">
+          Frontend polish, backend structure, database design, cloud services, and wallet-connected blockchain flows.
+        </SectionHeading>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.category}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: categoryIndex * 0.1 }}
-              whileHover={{ y: -5, boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)' }}
-              className="bg-dark-secondary/50 p-6 rounded-lg border border-primary-teal/20 glow-effect"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="text-primary-teal">{category.icon}</div>
-                <h3 className="text-xl font-semibold text-text-light">{category.category}</h3>
+        <div ref={gridRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {skills.map((skill, index) => {
+            const Icon = skill.icon;
+            return (
+              <div key={skill.name} className="skill-reveal brut-box brut-hover p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="icon-shell">
+                    <Icon />
+                  </div>
+                  <span className="card-index">{String(index + 1).padStart(2, '0')}</span>
+                </div>
+                <h3 className="card-title mt-5">{skill.name}</h3>
+                <p className="card-copy mt-2 min-h-12">{blurbs[index % blurbs.length]}</p>
+                <div className="skill-meter mt-5">
+                  <div className="skill-meter-fill" />
+                </div>
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.5, delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="flex items-center gap-2 px-3 py-2 bg-dark-base/50 rounded-md border border-primary-cyan/20 text-sm text-text-light/90 hover:border-primary-teal transition-colors"
-                  >
-                    <span className="text-primary-teal">{skill.icon}</span>
-                    <span>{skill.name}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -138,4 +83,3 @@ const Skills = () => {
 };
 
 export default Skills;
-

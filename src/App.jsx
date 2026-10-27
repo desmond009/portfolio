@@ -2,22 +2,27 @@ import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
-import Projects from './components/Projects';
 import Experience from './components/Experience';
+import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import './App.css';
+import { useScrollMotion } from './hooks/useScrollMotion';
 
 function App() {
+  useScrollMotion();
+
   return (
-    <div className="App">
+    <div className="min-h-screen overflow-x-hidden text-ink">
+      <div className="scroll-progress-line" aria-hidden="true" />
       <Navigation />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );
