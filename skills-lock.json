@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "autter-repo-context": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "autter-repo-context/SKILL.md",
+      "computedHash": "19d1804c738a2eefbceb9e733ba43776640b912da10cc7a11c929dd886cdb182"
+    },
+    "autter-runtime-errors": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "autter-runtime-errors/SKILL.md",
+      "computedHash": "7a49d08d12bee5d760b1dcde43791ede0d73f5e50cdb3b2eef1c2b3ebc7bd708"
+    },
+    "autter-runtime-logs": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "autter-runtime-logs/SKILL.md",
+      "computedHash": "bbafc90d7a0c45d258afb7fd13ff6c158cb8203d69507e065b6a92ffe56824e8"
+    },
+    "autter-runtime-setup": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "autter-runtime-setup/SKILL.md",
+      "computedHash": "734ba1cf9cf2fc25adb851c12b3225e429e40784f8842a685d7a1b066964ffae"
+    },
+    "otel-browser-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-browser-style/SKILL.md",
+      "computedHash": "aeb9cb1c79f7f788ff3775f02f76b809df2522ecde46243e873a46ff74243156"
+    },
+    "otel-edge-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-edge-style/SKILL.md",
+      "computedHash": "b7972eb268ebf191742c06cdc9913c25dc44dab6b053217a8bb8b366da4e9ccf"
+    },
+    "otel-generic-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-generic-style/SKILL.md",
+      "computedHash": "786429f05d5ef67302593d10715f61ecad4ea392d0bbfb8d653961d167b0ee26"
+    },
+    "otel-go-rust-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-go-rust-style/SKILL.md",
+      "computedHash": "18ecd9c4d34139f9fded22ee815959790840d2a6a32972c5d7477137b3814ac8"
+    },
+    "otel-node-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-node-style/SKILL.md",
+      "computedHash": "54fa653bbbc09bcf9751e62cf0aa2aec13eb2faa7651629b7b881acc847c51fa"
+    },
+    "otel-python-style": {
+      "source": "Autter-dev/autter-skills",
+      "sourceType": "github",
+      "skillPath": "otel-python-style/SKILL.md",
+      "computedHash": "0279e2d9cf4b1e46e30dfa547204d31542adfadf52b61d79efeee82c89eb8dc8"
+    }
+  }
+}
