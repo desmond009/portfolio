@@ -74,7 +74,7 @@ const Contact = () => {
                 Message
                 <textarea name="message" rows="6" className="field-input resize-none" placeholder="Tell me about the role, product, or idea." />
               </label>
-              <button type="submit" className="brut-btn w-full sm:w-auto">
+              <button type="submit" data-autter-action="contact-submit" className="brut-btn w-full sm:w-auto">
                 <FaPaperPlane />
                 Send Message
               </button>
