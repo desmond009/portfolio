@@ -1,55 +1,98 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createTimeline, utils } from 'animejs';
-import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { profile } from '../data/portfolio';
 
 const { stagger } = utils;
 
+const roles = profile.role.split('|').map((role) => role.trim());
+
+// Types each role out, holds it, deletes it, then moves to the next one.
+const useTypewriter = (lines) => {
+  const [text, setText] = useState(lines[0]);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    // Starts with the first role already on screen, then begins cycling.
+    let lineIndex = 0;
+    let charIndex = lines[0].length;
+    let deleting = true;
+    let timer;
+
+    const tick = () => {
+      const line = lines[lineIndex];
+      charIndex += deleting ? -1 : 1;
+      setText(line.slice(0, charIndex));
+
+      let delay = deleting ? 35 : 75;
+      if (!deleting && charIndex === line.length) {
+        deleting = true;
+        delay = 1800;
+      } else if (deleting && charIndex === 0) {
+        deleting = false;
+        lineIndex = (lineIndex + 1) % lines.length;
+        delay = 350;
+      }
+      timer = setTimeout(tick, delay);
+    };
+
+    timer = setTimeout(tick, 2600);
+    return () => clearTimeout(timer);
+  }, [lines]);
+
+  return text;
+};
+
 const Hero = () => {
   const heroRef = useRef(null);
+  const typed = useTypewriter(roles);
 
   useEffect(() => {
     const root = heroRef.current;
-    if (!root) return undefined;
+    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
-    const titleLines = root.querySelectorAll('.editorial-title-line');
-    const revealItems = root.querySelectorAll('.hero-reveal');
-    const redPanel = root.querySelector('.editorial-red-panel');
-
-    // Editorial intro keeps motion focused on first paint instead of running constant background loops.
+    // The window "boots": frame pops in, its shadow drops, then the contents stamp in.
     const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
     timeline
-      .add(redPanel, {
+      .add(root.querySelector('.hero-window'), {
         opacity: [0, 1],
-        translateX: [48, 0],
-        rotate: [2, 0],
-        duration: 760,
+        translateY: [24, 0],
+        scale: [0.97, 1],
+        duration: 700,
       })
       .add(
-        titleLines,
+        root.querySelectorAll('.win-dots span'),
         {
-          opacity: [0, 1],
-          translateY: [42, 0],
-          skewX: [-5, 0],
-          duration: 760,
-          delay: stagger(80),
+          scale: [0, 1],
+          duration: 360,
+          delay: stagger(70),
+          ease: 'outBack',
         },
-        '-=520',
+        '-=420',
       )
       .add(
-        revealItems,
+        root.querySelectorAll('.hero-word'),
         {
           opacity: [0, 1],
-          translateY: [28, 0],
-          duration: 720,
-          delay: stagger(85),
+          translateY: ['0.4em', 0],
+          duration: 620,
+          delay: stagger(90),
         },
-        '-=460',
+        '-=260',
+      )
+      .add(
+        root.querySelectorAll('.hero-reveal'),
+        {
+          opacity: [0, 1],
+          translateY: [18, 0],
+          duration: 560,
+          delay: stagger(80),
+        },
+        '-=420',
       );
 
-    return () => {
-      timeline.revert();
-    };
+    return () => timeline.revert();
   }, []);
 
   const scrollTo = (href) => {
@@ -57,66 +100,75 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" ref={heroRef} className="editorial-hero relative min-h-screen overflow-hidden pt-24">
-      <div className="hero-kinetic-layer" aria-hidden="true">
-        <span className="hero-kinetic-line hero-kinetic-line-one" />
-        <span className="hero-kinetic-line hero-kinetic-line-two" />
-        <span className="hero-kinetic-line hero-kinetic-line-three" />
-      </div>
-      <div className="editorial-red-panel" />
-
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] max-w-7xl flex-col justify-center px-4 pb-12 sm:px-6 lg:px-8">
-        <div className="hero-reveal editorial-label opacity-0">
-          <span />
-          Portfolio - 2026
+    <section id="home" ref={heroRef} className="flex min-h-screen items-center px-4 pb-16 pt-32 sm:px-6 lg:px-8">
+      <div className="hero-window brut-box brut-box-lg mx-auto w-full max-w-5xl">
+        <div className="win-bar">
+          <div className="win-dots" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+          <span className="win-title">Portfolio.exe</span>
+          <span className="win-chip win-chip-live">Open to work</span>
         </div>
 
-        <h1 className="editorial-title mt-8">
-          <span className="editorial-title-line block opacity-0">VIJENDER</span>
-          <span className="editorial-title-line block opacity-0">YADAV</span>
-        </h1>
+        <div className="p-6 sm:p-10">
+          <span className="hero-reveal tag-label">Portfolio - 2026</span>
 
-        <div className="hero-reveal mt-7 opacity-0">
-          <p className="editorial-role">
-            <span>&gt;</span> Full-Stack Developer
-          </p>
-          <p className="mt-5 max-w-3xl font-mono text-base leading-8 text-[#a09a8d] sm:text-lg">
+          <h1 className="hero-title mt-8">
+            <span className="hero-word hero-title-underline">Vijender</span>{' '}
+            <span className="hero-word inline-block">
+              Yadav<span className="hero-title-dot">.</span>
+            </span>
+          </h1>
+
+          <div className="hero-reveal terminal-box mt-8 px-4 py-4 sm:px-5">
+            <p className="terminal-status">terminal_status: open</p>
+            <p className="terminal-line" aria-label={roles.join(', ')}>
+              <span aria-hidden="true">
+                &gt; {typed}
+                <span className="caret" />
+              </span>
+            </p>
+          </div>
+
+          <p className="hero-reveal mt-8 max-w-3xl text-base leading-8 text-muted sm:text-lg">
             {profile.role}. B.Tech engineering student building MERN products, Web3 interfaces, and recruiter-ready
             applications with strong visual polish.
           </p>
-          <p className="mt-2 font-mono text-sm uppercase tracking-[0.18em] text-[#7b7468]">
-            <span className="text-[#c7a35c]">05+</span> projects / React / Node.js / Solana
-          </p>
-        </div>
 
-        <div className="hero-reveal hero-ticker opacity-0" aria-hidden="true">
-          <span className="hero-ticker-item">MERN</span>
-          <span className="hero-ticker-item">Web3</span>
-          <span className="hero-ticker-item">React</span>
-          <span className="hero-ticker-item">Node</span>
-        </div>
+          <div className="hero-reveal mt-5 flex flex-wrap gap-2">
+            {['05+ projects', 'MERN', 'Web3', 'React', 'Node.js', 'Solana'].map((item) => (
+              <span key={item} className="tech-tag">
+                {item}
+              </span>
+            ))}
+          </div>
 
-        <div className="hero-reveal mt-10 flex flex-col gap-4 opacity-0 sm:flex-row">
-          <button type="button" onClick={() => scrollTo('#projects')} className="magnetic-btn editorial-btn editorial-btn-light">
-            View Work
-            <FaArrowRight />
-          </button>
-          <button type="button" onClick={() => scrollTo('#contact')} className="magnetic-btn editorial-btn editorial-btn-dark">
-            Contact
-          </button>
-        </div>
+          <div className="hero-reveal mt-10 flex flex-col gap-4 sm:flex-row">
+            <button type="button" onClick={() => scrollTo('#projects')} className="brut-btn">
+              View Work
+              <FaArrowRight />
+            </button>
+            <button type="button" onClick={() => scrollTo('#contact')} className="brut-btn brut-btn-ghost">
+              <FaEnvelope />
+              Contact
+            </button>
+          </div>
 
-        <div className="hero-reveal mt-14 hidden border-t border-[#f4ecd7]/10 pt-6 font-mono text-xs uppercase tracking-[0.32em] text-[#6d675b] opacity-0 md:flex">
-          <span>Find me:</span>
-          <a href={profile.github} target="_blank" rel="noopener noreferrer" className="ml-8 hover:text-[#f4ecd7]">GitHub</a>
-          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="ml-8 hover:text-[#f4ecd7]">LinkedIn</a>
-          <span className="mx-auto">Scroll</span>
+          <div className="hero-reveal mt-10 flex gap-4">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="icon-sq" aria-label="GitHub">
+              <FaGithub />
+            </a>
+            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="icon-sq" aria-label="LinkedIn">
+              <FaLinkedin />
+            </a>
+            <a href={`mailto:${profile.email}`} className="icon-sq" aria-label="Email">
+              <FaEnvelope />
+            </a>
+          </div>
         </div>
       </div>
-
-      <button type="button" onClick={() => scrollTo('#about')} className="editorial-scroll" aria-label="Scroll to about">
-        <FaArrowDown />
-      </button>
     </section>
   );
 };

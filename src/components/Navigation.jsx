@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { animate, createTimeline, utils } from 'animejs';
-import { FaBars, FaGithub, FaLinkedin, FaTimes } from 'react-icons/fa';
+import { createTimeline, utils } from 'animejs';
+import { FaBars, FaGithub, FaTimes } from 'react-icons/fa';
 import { navLinks, profile } from '../data/portfolio';
 
 const { stagger } = utils;
@@ -13,39 +13,34 @@ const Navigation = () => {
 
   useEffect(() => {
     const nav = navRef.current;
-    if (!nav) return undefined;
+    if (!nav || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
-    const logo = nav.querySelector('.nav-logo-mark');
-    const navItems = nav.querySelectorAll('.nav-link-item');
-    const socials = nav.querySelectorAll('.nav-social-link');
-
+    // Items drop in like stamped labels, one after another.
     const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
     timeline
-      .add(logo, {
+      .add(nav.querySelector('.nav-logo'), {
         opacity: [0, 1],
-        translateY: [-18, 0],
-        rotate: [-8, 0],
-        duration: 720,
+        translateY: [-14, 0],
+        duration: 600,
       })
       .add(
-        navItems,
+        nav.querySelectorAll('.nav-link-item'),
         {
           opacity: [0, 1],
-          translateY: [-12, 0],
-          duration: 560,
-          delay: stagger(55),
-        },
-        '-=500',
-      )
-      .add(
-        socials,
-        {
-          opacity: [0, 1],
-          translateX: [12, 0],
+          translateY: [-10, 0],
           duration: 480,
-          delay: stagger(70),
+          delay: stagger(50),
         },
         '-=420',
+      )
+      .add(
+        nav.querySelector('.nav-end'),
+        {
+          opacity: [0, 1],
+          scale: [0.8, 1],
+          duration: 420,
+        },
+        '-=360',
       );
 
     return () => timeline.revert();
@@ -53,8 +48,8 @@ const Navigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      const scrollPosition = window.scrollY + 100;
+      setIsScrolled(window.scrollY > 10);
+      const scrollPosition = window.scrollY + 120;
 
       for (const section of navLinks.map((link) => link.href.slice(1))) {
         const element = document.getElementById(section);
@@ -68,7 +63,8 @@ const Navigation = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -76,113 +72,66 @@ const Navigation = () => {
     if (!isOpen) return undefined;
 
     const menu = navRef.current?.querySelector('.mobile-nav-panel');
-    const menuItems = menu?.querySelectorAll('a');
-    if (!menu || !menuItems?.length) return undefined;
+    if (!menu || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
 
     const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
     timeline
       .add(menu, {
         opacity: [0, 1],
-        translateY: [-12, 0],
-        scale: [0.98, 1],
-        duration: 320,
+        translateY: [-10, 0],
+        duration: 280,
       })
       .add(
-        menuItems,
+        menu.querySelectorAll('a'),
         {
           opacity: [0, 1],
-          translateX: [-16, 0],
-          duration: 360,
-          delay: stagger(45),
+          translateX: [-12, 0],
+          duration: 320,
+          delay: stagger(40),
         },
-        '-=190',
+        '-=160',
       );
 
     return () => timeline.revert();
   }, [isOpen]);
 
-  useEffect(() => {
-    const activeLink = navRef.current?.querySelector('.nav-link-active');
-    if (!activeLink) return undefined;
-
-    const animation = animate(activeLink, {
-      scale: [0.94, 1],
-      duration: 360,
-      ease: 'outBack',
-    });
-
-    return () => animation.revert();
-  }, [activeSection]);
-
   const scrollToSection = (e, href) => {
     e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    setIsOpen(false);
   };
 
   return (
-    <nav
-      ref={navRef}
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'border-b border-[#f3eee2]/10 bg-[#0b0d0f]/82 shadow-2xl shadow-black/30 backdrop-blur-2xl' : 'bg-transparent'
-      }`}
-    >
+    <nav ref={navRef} className={`site-nav fixed left-0 right-0 top-0 z-50 ${isScrolled ? 'site-nav-scrolled' : ''}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <a href="#home" onClick={(e) => scrollToSection(e, '#home')} className="group flex items-center gap-3">
-            <span className="nav-logo-mark grid h-11 w-11 place-items-center rounded-2xl border border-[#c7a35c]/35 bg-white/[0.04] font-mono text-lg font-bold text-[#d9bd7a] opacity-0 shadow-glass transition group-hover:border-[#d9bd7a]/70 group-hover:shadow-neon">
-              VY
-            </span>
-            <span className="hidden text-sm font-semibold leading-tight text-white sm:block">
-              Vijender
-              <span className="block font-mono text-[11px] uppercase tracking-[0.28em] text-[#86a9a6]/70">Portfolio</span>
-            </span>
+        <div className="flex h-20 items-center justify-between gap-4">
+          <a href="#home" onClick={(e) => scrollToSection(e, '#home')} className="nav-logo" aria-label="Vijender Yadav, home">
+            VY
           </a>
 
-          <div className="hidden items-center rounded-full border border-white/10 bg-white/[0.035] px-2 py-2 backdrop-blur-xl lg:flex">
+          <div className="ml-auto hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className={`nav-link-item rounded-full px-4 py-2 text-sm font-medium opacity-0 transition ${
-                  activeSection === link.href.slice(1)
-                    ? 'nav-link-active bg-[#c7a35c]/12 text-[#d9bd7a] shadow-[inset_0_0_18px_rgba(199,163,92,0.1)]'
-                    : 'text-[#c9c1ae] hover:text-[#f4ecd7]'
-                }`}
+                className={`nav-link nav-link-item ${activeSection === link.href.slice(1) ? 'nav-link-active' : ''}`}
               >
                 {link.name}
               </a>
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#d9bd7a] sm:block"
-              aria-label="GitHub"
-            >
-              <FaGithub className="h-5 w-5" />
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-social-link hidden text-[#c9c1ae] opacity-0 transition hover:text-[#d9bd7a] sm:block"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin className="h-5 w-5" />
+          <div className="nav-end flex items-center gap-3 lg:ml-6">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="icon-sq h-11 w-11" aria-label="GitHub">
+              <FaGithub />
             </a>
             <button
               type="button"
               onClick={() => setIsOpen((value) => !value)}
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.05] text-white lg:hidden"
+              className="icon-sq h-11 w-11 lg:hidden"
               aria-label="Toggle navigation"
+              aria-expanded={isOpen}
             >
               {isOpen ? <FaTimes /> : <FaBars />}
             </button>
@@ -191,13 +140,13 @@ const Navigation = () => {
       </div>
 
       {isOpen && (
-        <div className="mobile-nav-panel mx-4 mb-4 rounded-3xl border border-white/10 bg-[#111416]/95 p-3 opacity-0 shadow-2xl shadow-black/30 backdrop-blur-2xl lg:hidden">
+        <div className="mobile-nav-panel mx-4 mb-4 lg:hidden">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
-              className="block rounded-2xl px-4 py-3 text-sm font-medium text-[#c9c1ae] hover:bg-white/[0.06] hover:text-[#d9bd7a]"
+              className={activeSection === link.href.slice(1) ? 'nav-link-active' : ''}
             >
               {link.name}
             </a>

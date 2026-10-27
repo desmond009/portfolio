@@ -13,6 +13,11 @@ export function useAnimeScrollReveal(selector = '.reveal-item', options = {}) {
     const items = root.querySelectorAll(selector);
     if (!items.length) return undefined;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('is-revealed');
+      return undefined;
+    }
+
     items.forEach((item) => {
       item.style.opacity = '0';
       item.style.transform = `translateY(${options.distance || 34}px)`;
@@ -23,12 +28,20 @@ export function useAnimeScrollReveal(selector = '.reveal-item', options = {}) {
       ([entry]) => {
         if (!entry.isIntersecting) return;
 
+        root.classList.add('is-revealed');
         animate(items, {
           opacity: [0, 1],
           translateY: [options.distance || 34, 0],
           duration: options.duration || 850,
           delay: stagger(options.stagger || 90),
           ease: options.ease || 'outExpo',
+          // Drop inline styles afterwards so CSS hover transforms take over again.
+          onComplete: () => {
+            items.forEach((item) => {
+              item.style.opacity = '';
+              item.style.transform = '';
+            });
+          },
         });
 
         observer.disconnect();

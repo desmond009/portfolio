@@ -1,243 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
-import { animate, createTimeline, utils } from 'animejs';
-import { FaArrowLeft, FaArrowRight, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { projects } from '../data/portfolio';
 import { useAnimeScrollReveal } from '../hooks/useAnimeScrollReveal';
+import SectionHeading from './SectionHeading';
 
-const { stagger } = utils;
-
-const ProjectZineCard = ({ project, index, isActive, onActivate }) => {
-  const cardRef = useRef(null);
-  const Icon = project.icon;
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return undefined;
-
-    const scan = card.querySelector('.zine-card-scan');
-
-    const handleEnter = () => {
-      animate(card, {
-        translateY: -8,
-        scale: 1.012,
-        duration: 240,
-        ease: 'outQuad',
-      });
-      animate(scan, {
-        translateX: ['-120%', '180%'],
-        opacity: [0, 0.85, 0],
-        duration: 780,
-        ease: 'outExpo',
-      });
-    };
-
-    const handleLeave = () => {
-      animate(card, {
-        translateY: 0,
-        scale: 1,
-        duration: 560,
-        ease: 'outExpo',
-      });
-    };
-
-    card.addEventListener('pointerenter', handleEnter);
-    card.addEventListener('pointerleave', handleLeave);
-    return () => {
-      card.removeEventListener('pointerenter', handleEnter);
-      card.removeEventListener('pointerleave', handleLeave);
-    };
-  }, []);
-
-  return (
-    <article
-      ref={cardRef}
-      onMouseEnter={onActivate}
-      onFocus={onActivate}
-      className={`zine-project-card reveal-project ${isActive ? 'zine-project-card-active' : ''}`}
-      tabIndex={0}
-    >
-      <div className="zine-rip-corner">RIP</div>
-      <div className="zine-card-scan" />
-      <div className="relative z-10 flex min-h-[31rem] flex-col">
-        <div className={`zine-card-poster bg-gradient-to-br ${project.gradient}`}>
-          <div className="zine-layer zine-ghost-number">0{index + 1}</div>
-          <div className="zine-layer zine-noise-grid" />
-          <span className="zine-status">+ {index % 2 === 0 ? 'Deployed' : 'Live'}</span>
-          <div className="zine-layer zine-icon-box">
-            <Icon className="h-12 w-12" />
-          </div>
-          <span className="zine-layer zine-mini-chip top-20 right-5">{project.metrics[0]}</span>
-          <span className="zine-layer zine-mini-chip bottom-7 left-5">{project.metrics[1]}</span>
-        </div>
-
-        <div className="flex flex-1 flex-col border-t border-black/80 bg-[#f2ecd8] p-5 text-[#10100d]">
-          <div className="mb-3 flex items-start justify-between gap-3">
-            <div>
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.28em] text-[#c7a35c]">
-                {project.eyebrow}
-              </p>
-              <h3 className="mt-2 text-3xl font-black leading-none tracking-tight">{project.title}</h3>
-            </div>
-            <span className="shrink-0 font-mono text-5xl font-black leading-none text-black/14">0{index + 1}</span>
-          </div>
-
-          <p className="line-clamp-3 min-h-20 text-sm font-semibold leading-6 text-black/70">{project.featureTitle}</p>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.stack.slice(0, 4).map((tech) => (
-              <span key={tech} className="zine-tech-tag">
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-            <a href={project.github} target="_blank" rel="noopener noreferrer" className="zine-card-link" aria-label={`${project.title} GitHub`}>
-              <FaGithub />
-              GitHub
-            </a>
-            <a href={project.live} className="zine-card-link" aria-label={`${project.title} live preview`}>
-              <FaExternalLinkAlt />
-              Live
-            </a>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-};
+const toFileName = (title) => `${title.replace(/\s+/g, '_').toUpperCase()}.EXE`;
 
 const Projects = () => {
-  const sectionRef = useAnimeScrollReveal('.reveal-project', { stagger: 120, distance: 46 });
-  const railRef = useRef(null);
-  const headingRef = useRef(null);
-  const dragState = useRef({ active: false, startX: 0, scrollLeft: 0 });
-  const [activeProject, setActiveProject] = useState(0);
-
-  useEffect(() => {
-    const heading = headingRef.current;
-    if (!heading) return undefined;
-
-    const words = heading.querySelectorAll('.zine-heading-word');
-
-    // Oversized heading enters with a punchy editorial stagger, matching the recorded zine reference.
-    const timeline = createTimeline({ defaults: { ease: 'outExpo' } });
-    timeline
-      .add(words, {
-        opacity: [0, 1],
-        translateY: [70, 0],
-        rotateX: [-45, 0],
-        duration: 900,
-        delay: stagger(90),
-      })
-      .add(
-        '.zine-red-rule',
-        {
-          scaleX: [0, 1],
-          duration: 760,
-        },
-        '-=520',
-      );
-
-    return () => timeline.revert();
-  }, []);
-
-  const scrollToProject = (index) => {
-    const rail = railRef.current;
-    const card = rail?.querySelectorAll('.zine-project-card')[index];
-    if (!rail || !card) return;
-
-    setActiveProject(index);
-    rail.scrollTo({
-      left: card.offsetLeft - rail.offsetLeft - 24,
-      behavior: 'smooth',
-    });
-  };
-
-  const goToPrevious = () => {
-    scrollToProject(activeProject === 0 ? projects.length - 1 : activeProject - 1);
-  };
-
-  const goToNext = () => {
-    scrollToProject(activeProject === projects.length - 1 ? 0 : activeProject + 1);
-  };
-
-  const handlePointerDown = (event) => {
-    const rail = railRef.current;
-    if (!rail) return;
-
-    dragState.current = {
-      active: true,
-      startX: event.pageX - rail.offsetLeft,
-      scrollLeft: rail.scrollLeft,
-    };
-    rail.classList.add('zine-rail-dragging');
-  };
-
-  const handlePointerMove = (event) => {
-    const rail = railRef.current;
-    if (!rail || !dragState.current.active) return;
-
-    event.preventDefault();
-    const x = event.pageX - rail.offsetLeft;
-    rail.scrollLeft = dragState.current.scrollLeft - (x - dragState.current.startX) * 1.25;
-  };
-
-  const stopDragging = () => {
-    const rail = railRef.current;
-    dragState.current.active = false;
-    rail?.classList.remove('zine-rail-dragging');
-  };
+  const ref = useAnimeScrollReveal('.project-reveal', { stagger: 120, distance: 40 });
 
   return (
-    <section id="projects" ref={sectionRef} className="zine-projects-section section-padding relative overflow-hidden">
-      <div className="zine-paper-glow left-[-12rem] top-10 bg-[#c7a35c]/14" />
-      <div className="zine-paper-glow right-[-12rem] bottom-0 bg-[#86a9a6]/10" />
-
+    <section id="projects" ref={ref} className="section-padding">
       <div className="mx-auto max-w-7xl">
-        <div ref={headingRef} className="reveal-project">
-          <div className="mb-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <div>
-              <div className="zine-label">The Zine</div>
-              <h2 className="mt-5 overflow-hidden text-[4.4rem] font-black leading-[0.82] tracking-tight text-[#f2ecd8] sm:text-[7rem] lg:text-[9rem]">
-                <span className="zine-heading-word block opacity-0">FEATURED</span>
-                <span className="zine-heading-word block text-[#c7a35c] opacity-0">PROJECTS</span>
-              </h2>
-            </div>
-            <div className="max-w-md">
-              <p className="font-mono text-xs uppercase tracking-[0.24em] text-slate-500">
-                Scroll or drag through the project zine. Rip corners reveal the card confessions.
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <button type="button" onClick={goToPrevious} className="zine-arrow" aria-label="Previous project">
-                  <FaArrowLeft />
-                </button>
-                <button type="button" onClick={goToNext} className="zine-arrow zine-arrow-active" aria-label="Next project">
-                  <FaArrowRight />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="zine-red-rule origin-left" />
-        </div>
+        <SectionHeading title="Featured Projects" className="project-reveal" />
 
-        <div
-          ref={railRef}
-          className="reveal-project zine-project-rail"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={stopDragging}
-          onPointerLeave={stopDragging}
-        >
-          {projects.map((project, index) => (
-            <ProjectZineCard
-              key={project.title}
-              project={project}
-              index={index}
-              isActive={activeProject === index}
-              onActivate={() => {}}
-            />
-          ))}
+        <div className="grid gap-10 md:grid-cols-2">
+          {projects.map((project, index) => {
+            const Icon = project.icon;
+            return (
+              <article key={project.title} className="project-reveal brut-box brut-hover flex flex-col overflow-hidden">
+                <div className="win-bar">
+                  <div className="win-dots" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <span className="win-title">{toFileName(project.title)}</span>
+                  <span className="win-chip">{index % 2 === 0 ? 'Deployed' : 'Live'}</span>
+                </div>
+
+                <div className="dot-panel relative flex h-44 items-center justify-center border-b-2 border-ink">
+                  <div className="icon-shell h-20 w-20 text-4xl">
+                    <Icon />
+                  </div>
+                  <span className="tech-tag absolute left-4 top-4 bg-card">{project.metrics[0]}</span>
+                  <span className="tech-tag absolute bottom-4 right-4 bg-card">{project.metrics[1]}</span>
+                  <span className="absolute bottom-3 left-4 font-mono text-5xl font-extrabold text-chip/60">
+                    0{index + 1}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+                    {project.eyebrow}
+                  </p>
+                  <h3 className="mt-2 font-mono text-2xl font-extrabold sm:text-3xl">{project.title}</h3>
+                  <p className="card-copy mt-3">{project.featureTitle}</p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <span key={tech} className="tech-tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto flex flex-wrap gap-4 pt-7">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="brut-btn min-h-11 px-5 text-xs sm:px-5">
+                      <FaGithub />
+                      GitHub
+                    </a>
+                    <a href={project.live} className="brut-btn brut-btn-ghost min-h-11 px-5 text-xs sm:px-5" aria-label={`${project.title} live preview`}>
+                      <FaExternalLinkAlt />
+                      Live
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

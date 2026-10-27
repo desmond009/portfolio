@@ -7,33 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        void: '#080a0c',
-        neon: '#c7a35c',
-        dark: {
-          base: '#080a0c',
-          secondary: '#111416',
+        paper: '#f5f2ec',
+        card: '#fbf9f5',
+        ink: {
+          DEFAULT: '#2a1f1a',
+          soft: '#4a3f38',
         },
-        primary: {
-          teal: '#86a9a6',
-          cyan: '#86a9a6',
-        },
-        secondary: {
-          blue: '#7aa7a5',
-        },
-        text: {
-          light: '#f3eee2',
-        },
+        muted: '#6b625a',
+        chip: '#b8afa6',
       },
       fontFamily: {
-        mono: ['Space Mono', 'JetBrains Mono', 'monospace'],
-        sans: ['Inter', 'Poppins', 'sans-serif'],
-        code: ['Fira Code', 'monospace'],
-      },
-      boxShadow: {
-        glow: '0 0 24px rgba(199, 163, 92, 0.24)',
-        'glow-lg': '0 0 44px rgba(134, 169, 166, 0.24)',
-        neon: '0 0 26px rgba(199, 163, 92, 0.2)',
-        glass: '0 24px 90px rgba(0, 0, 0, 0.38)',
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
